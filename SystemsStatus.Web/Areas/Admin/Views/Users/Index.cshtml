@@ -1,0 +1,67 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Common.Pagination
+@using SystemsStatus.Web.Extensions
+@model IPagedList<User>
+
+@{
+    ViewBag.Title = "Users List - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Users";
+    ViewBag.DashboardSubMenuActive = "Users List";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Users" })">Users</a>
+    </li>
+    <li class="active">Users List</li>
+</ol>
+<h1>Users List</h1>
+@if (Model.Count() == 0)
+{
+<p>
+    There are currently no users. Click on Users -> Create User to create a user.
+</p>
+}
+else
+{
+<p>
+    Showing users (@Model.ItemStart - @Model.ItemEnd) of @Model.TotalItemCount
+</p>
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="width: 30%;">Last Name</th>
+            <th style="width: 30%;">First Name</th>
+            <th style="width: 20%;">Username</th>
+            <th style="width: 10%;">Role</th>
+            <th style="width: 5%;">Active</th>
+            <th style="width: 5%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.LastName</td>
+                <td>@user.FirstName</td>
+                <td>@user.Username</td>
+                <td>@user.Role.Name</td>
+                <td style="text-align: center;">
+                    @if (user.Active)
+                    {
+                        <span class="glyphicon glyphicon-ok"></span>
+                    }
+                </td>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("Edit", new { controller = "Users", id = user.Id })" class="btn btn-xs btn-default" title="Edit User"><span class="glyphicon glyphicon-pencil"></span></a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+@Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(o => o.DisplayTemplate("_BootstrapPagination"))  

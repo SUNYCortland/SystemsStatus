@@ -1,0 +1,270 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Web.Extensions
+@using SystemsStatus.Web.Areas.Admin.ViewModels
+@model AccountCreateWidgetViewModel
+
+@{
+    ViewBag.Title = "Create Widget - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Account";
+    ViewBag.DashboardSubMenuActive = "Create Widget";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Account" })">Account</a>
+    </li>
+    <li class="active">Create Widget</li>
+</ol>
+<h1>Create Widget</h1>
+<p>
+    Complete the following form and click 'Create' to save your widget.
+</p>
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Widget Details
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Widget.Name, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Widget.Name, new { @class = "form-control", placeholder = "Enter your widget name", autocomplete = "off", @value = "My Services Widget" })
+                        @Html.ValidationMessageFor(x => x.Widget.Name)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Widget.Height, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Widget.Height, new { @class = "form-control", placeholder = "Enter your widget height", autocomplete = "off", @value = "200" })
+                        @Html.ValidationMessageFor(x => x.Widget.Height)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Widget.Department, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.DropDownListFor(x => x.DepartmentId, Model.Departments, String.Empty, new { @class = "form-control", autocomplete = "off" })
+                        <p class="help-block">Note: Specifying a department will override any selected services for this widget.</p>
+                        @Html.ValidationMessageFor(x => x.DepartmentId)
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-6">
+                        <div class="pull-right">
+                            <div class="input-group" style="margin-bottom: 10px;">
+                                <input type="text" id="txtSearchServices" class="form-control input-sm" placeholder="Search services..." />
+                                <span class="input-group-btn">
+                                    <button id="btnClearSearch" class="btn btn-danger btn-sm" type="button">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>                
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="pull-right">
+                            <strong>Filter: </strong>
+                            <a href="#" class="btnFilterServices label label-default label-lg">all</a>
+                            <a href="#" class="btnFilterServices label label-success">online</a>
+                            <a href="#" class="btnFilterServices label label-primary">maintenance</a>
+                            <a href="#" class="btnFilterServices label label-warning">degraded</a>
+                            <a href="#" class="btnFilterServices label label-danger">down</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Services, new { @class = "col-lg-3" })
+                    <div id="servicesDropdownList" class="col-lg-9">
+                        @Html.ListBoxFor(x => x.ServiceIds, Model.Services.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.Value.ToString() }), new { @class = "form-control", style = "height: 200px" })
+                        <p class="help-block">Note: Specifying services will override a selected department for this widget.</p>
+                        @Html.ValidationMessageFor(x => x.ServiceIds)
+                    </div>
+                </div>
+            </div>
+        </fieldset>    
+    </div>
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Preview<span id="widgetPreviewLoading" class="pull-right hidden"><img src="@Url.Content("~/Images/ajax_loader.gif")" alt="Loading..." /></span>
+            </legend>
+            <p class="help-block" style="margin-top: 0;">
+                Note: Services only display if their parent service is selected and if they are set to display on the dashboard.
+            </p>
+            <div id="widgetPreview">
+
+            </div>
+        </fieldset>
+    </div>
+</div>
+<center>
+    <span class="required">*</span> indicates a required field
+</center>
+<hr />
+<div class="row" style="margin-top: 20px;">
+    <div class="col-lg-12">
+        <div class="well well-sm" style="overflow: auto;">
+            <input type="button" class="btn btn-default pull-left" onclick="window.history.back()" value="Cancel" />
+            <input type="submit" class="btn btn-success pull-right" value="Create" />
+        </div>
+    </div>
+</div>
+}
+@section scripts
+{
+<script type="text/javascript">
+    function ShowThrobber(elementId) {
+        $("#" + elementId).removeClass("hidden");   
+    }
+
+    function HideThrobber(elementId) {
+        $("#" + elementId).addClass("hidden");
+    }
+
+    function UpdateServiceListDropdown(strQuery, strServiceStatus) {
+        $("#ServiceIds").attr("disabled", true);
+
+        $.getJSON("@Url.Action("GetServicesSelectList", new { controller = "Services" })", { filter: strServiceStatus, query: strQuery }, function (services) {
+            var servicesSelect = $("#ServiceIds");
+
+            servicesSelect.empty();
+
+            $.each(services, function (index, service) {
+                servicesSelect.append($('<option/>', {
+                    value: service.value,
+                    text: service.text
+                }));
+            });
+
+            $("#ServiceIds").attr("disabled", false);
+        });
+    }
+
+    function UpdateWidgetPreview() {
+        ShowThrobber("widgetPreviewLoading");
+
+        var widgetName = $("#Widget_Name").val();
+        var widgetHeight = $("#Widget_Height").val();
+        var widgetServices = [];
+
+        if (widgetName == "")
+            widgetName = "My Services Widget";
+
+        if (widgetHeight == "")
+            widgetHeight = 200;
+
+        var widget = new Object();
+        widget.Name = widgetName;
+        widget.Height = widgetHeight;
+        widget.Services = [];
+        widget.Department = new Object();
+        
+        var departmentId = $("#DepartmentId option:selected").val();
+
+        if (departmentId != null && departmentId != "")
+            widget.Department.Id = departmentId;
+        else
+            widget.Department = null;
+
+        $("#ServiceIds option:selected").each(function (i, serviceId) {
+            widget.Services[i] = new Object();
+            widget.Services[i].Id = $(serviceId).val();
+        });
+        
+        $.ajaxRequest(
+            "@Url.Action("GetWidgetPreview")",
+            "POST",
+            JSON.stringify(widget),
+            function(data){
+                $("#widgetPreview").html(data);
+                HideThrobber("widgetPreviewLoading");
+            },
+            function(status){}
+        );
+    }
+
+    $(document).ready(function () {
+        UpdateWidgetPreview();
+
+        $("#ServiceIds").on("change", function () {
+            $("#DepartmentId").val("");
+            UpdateWidgetPreview();
+        });
+
+        $("#DepartmentId").on("change", function () {
+            $("#ServiceIds").val([]);
+            UpdateWidgetPreview();
+        });
+
+        $("#Widget_Name").on("keyup", function() {
+            UpdateWidgetPreview();
+        });
+
+        $("#Widget_Height").on("keyup", function () {
+            UpdateWidgetPreview();
+        });
+
+        $("#Widget_Height").on("keypress", function (e) {
+            var theEvent = e || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode( key );
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+
+                if(theEvent.preventDefault) 
+                    theEvent.preventDefault();
+            }
+        });
+
+        $("#txtSearchServices").on("keyup", function(){
+            var strQuery = $(this).val();
+            var strServiceStatus = $(".label-lg").html();
+
+            UpdateServiceListDropdown(strQuery, strServiceStatus);
+        });
+
+        $(".btnFilterServices").on("click", function (e) {
+            e.preventDefault();
+
+            var strServiceStatus = $(this).html();
+            var strQuery = $("#txtSearchServices").val();
+
+            $(".btnFilterServices").each(function (index, filterButton){
+                $(filterButton).removeClass("label-lg");
+            });
+
+            $(this).addClass("label-lg");
+               
+            UpdateServiceListDropdown(strQuery, strServiceStatus);
+        });
+
+        $("#btnClearSearch").on("click", function (e) {
+            e.preventDefault();
+
+            $("#txtSearchServices").val("");
+
+            $(".btnFilterServices").each(function (index, filterButton){
+                if($(filterButton).html() == "all")
+                    $(filterButton).addClass("label-lg");
+                else
+                    $(filterButton).removeClass("label-lg");
+            });
+
+            UpdateServiceListDropdown(null, null);
+        });
+    });
+</script>
+}
+@section styles
+{
+@System.Web.Optimization.Styles.Render("~/bundles/css/widget")
+}

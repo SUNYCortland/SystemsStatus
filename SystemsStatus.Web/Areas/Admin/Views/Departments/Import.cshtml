@@ -1,0 +1,83 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Web.Areas.Admin.ViewModels
+@model DepartmentsImportViewModel
+
+@{
+    ViewBag.Title = "Import Departments - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Departments";
+    ViewBag.DashboardSubMenuActive = "Import";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.RouteUrl("Admin_Departments_FirstPage")">Departments</a>
+    </li>
+    <li class="active">Import Departments</li>
+</ol>
+<h1>Import Departments</h1>
+<p>
+    Either browse your computer and select an XML file, or copy and paste XML into the textbox and click 'Import'.
+</p>
+<h4>Example XML:</h4>
+<pre>
+&lt;?xml version="1.0"?&gt;
+&lt;Departments xmlns="http://cortland.edu/Departments.xsd"&gt;
+	&lt;Department&gt;
+		&lt;Name>Memorial Library&lt;/Name&gt;
+		&lt;Code>LIB&lt;/Code&gt;
+	&lt;/Department&gt;
+	&lt;Department&gt;
+		&lt;Name>Information Resources Support Center (IRSC)&lt;/Name&gt;
+		&lt;Code>IRSC&lt;/Code&gt;
+	&lt;/Department&gt;
+&lt;/Departments&gt;
+</pre>
+@using (Html.BeginForm("Import", "Departments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-lg-6">
+            <fieldset>
+                <legend>
+                    Choose a File
+                </legend>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="departmentsFile" class="col-lg-3">Departments File</label>
+                        <div class="col-lg-9">
+                            <input type="file" class="form-control" id="DepartmentsFile" name="DepartmentsFile" />
+                            @Html.ValidationMessageFor(x => x.DepartmentsFile)
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-lg-6">
+            <fieldset>
+                <legend>
+                    Enter XML
+                </legend>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.DepartmentsXml, new { @class = "col-lg-3" })
+                        <div class="col-lg-9">
+                            @Html.TextAreaFor(x => x.DepartmentsXml, new { @class = "form-control", placeholder = "Enter departments XML", autocomplete = "off", rows = "10" }) 
+                            @Html.ValidationMessageFor(x => x.DepartmentsXml)
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-12">
+            <div class="well well-sm" style="overflow: auto;">
+                <a href="@Url.Action("Import")" class="btn btn-default pull-left">Cancel</a>
+                <input type="submit" class="btn btn-success pull-right" id="btnImport" value="Import" />
+            </div>
+        </div>
+    </div>
+}

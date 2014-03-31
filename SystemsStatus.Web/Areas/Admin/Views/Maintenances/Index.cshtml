@@ -1,0 +1,112 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Web.Extensions
+@model IEnumerable<ScheduledMaintenance>
+
+@{
+    ViewBag.Title = "Maintenances - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Maintenances";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Maintenances" })">Maintenances</a>
+    </li>
+    <li class="active">Upcoming Maintenances</li>
+</ol>
+<h1>Upcoming Maintenances</h1>
+@if (Model.Count() == 0)
+{
+<p>
+    There are currently no scheduled maintenances.
+</p>
+}
+else
+{
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="width: 25%;">Service</th>
+            <th style="width: 35%;">Description</th>
+            <th style="width: 10%;">Offline</th>
+            <th style="width: 10%;">Expected Online</th>
+            <th style="width: 10%;">Scheduled By</th>
+            <th style="width: 10%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var maintenance in Model)
+    {
+        <tr>
+            <td>
+                <p>
+                    @maintenance.Service.Name
+                </p>
+            </td>
+            <td>
+                <p title="@maintenance.Description">
+                    @Html.TruncateAtWord(maintenance.Description, 100)
+                </p>
+            </td>
+            <td style="text-align: center;">
+                <p>
+                    @maintenance.Offline.ToString("MM/dd/yyyy hh:mm tt")
+                </p>
+            </td>
+            <td style="text-align: center;">
+                @if (maintenance.ExpectedOnline.HasValue)
+                {
+                    <p>
+                    @maintenance.ExpectedOnline.Value.ToString("MM/dd/yyyy hh:mm tt")
+                    </p>
+                }
+            </td>
+            <td>
+                <p>
+                    @maintenance.ScheduledBy.Username
+                </p>
+            </td>
+            <td style="text-align: center;">
+                <a href="@Url.Action("Edit", new { controller = "Maintenances", id = maintenance.Id.Value })" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a href="@Url.Action("Delete", new { controller = "Maintenances", id = maintenance.Id.Value })" class="btn btn-xs btn-danger btnDeleteMaintenance"><span class="glyphicon glyphicon-remove"></span></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+}
+<div id="confirmDeleteModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Are you sure?</h4>
+            </div>
+            <div id="modalBody" class="modal-body">
+                Are you sure you want to delete this scheduled maintenance?
+            </div>
+            <div id="modalFooter" class="modal-footer">
+                <a href="#" id="btnConfirmDelete" class="btn btn-md btn-default">Delete</a>
+                <a href="#" class="btn btn-md btn-danger" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".btnDeleteMaintenance").on("click", function (e) {
+                e.preventDefault();
+
+                $("#btnConfirmDelete").attr("href", $(this).attr("href"));
+
+                $("#confirmDeleteModal").modal("show");
+            });
+        });
+    </script>
+}

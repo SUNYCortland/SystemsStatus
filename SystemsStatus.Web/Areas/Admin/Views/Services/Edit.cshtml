@@ -1,0 +1,255 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Web.Areas.Admin.ViewModels
+@using SystemsStatus.Web.Extensions
+@model ServicesEditViewModel
+@{
+    ViewBag.Title = Model.Service.Name + " - Service Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Services";
+    ViewBag.DashboardSubMenuActive = "Edit";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Services" })">Services</a>
+    </li>
+    <li class="active">@Model.Service.Name</li>
+</ol>
+<h1>Edit Service - @Model.Service.Name</h1>
+<p>
+    Make any changes to this service and click 'Save'.
+</p>
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Service Details
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Service.Name, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Service.Name, new { @class = "form-control", placeholder = "Enter a service name", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Service.Name)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Service.Public, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.CheckBoxFor(x => x.Service.Public, new { @class = "pull-left" })
+                        @Html.ValidationMessageFor(x => x.Service.Public)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Service.Url, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Service.Url, new { @class = "form-control", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Service.Url)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Service.Department, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.DropDownListFor(x => x.DepartmentId, Model.Departments, String.Empty, new { @class = "form-control", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Service.Department)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Service.Description, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextAreaFor(x => x.Service.Description, new { @class = "form-control", placeholder = "Enter a service description", autocomplete = "off", rows = "7" })
+                        @Html.ValidationMessageFor(x => x.Service.Description)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Service.SLA, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextAreaFor(x => x.Service.SLA, new { @class = "form-control", placeholder = "Enter a service level agreement", autocomplete = "off", rows = "7" })
+                        @Html.ValidationMessageFor(x => x.Service.SLA)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Service.Cost, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Service.Cost, new { @class = "form-control", placeholder = "Enter a service cost", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Service.Cost)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>Owners</legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Users, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.ListBoxFor(x => x.OwnerIds, Model.Users.OrderBy(x => x.LastName).Select(x => new SelectListItem { Text = x.FirstName + " " + x.LastName, Value = x.Id.Value.ToString() }), new { @class = "form-control", style = "height: 200px" })
+                        @Html.ValidationMessageFor(x => x.OwnerIds)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Tags</legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Service.Tags, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        <div class="input-group">
+                            <input type="text" id="Service_Tags" class="form-control" placeholder="Seperate tags by comma" autocomplete="off" data-bind="returnKey: addTag" />
+                            <span class="input-group-btn">
+                                <a href="#" class="btn btn-default" data-bind="click: addTag">
+                                    <span class="glyphicon glyphicon-plus"></span> Add
+                                </a>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.Service.Tags)
+                        <div id="serviceTags" style="margin-top: 10px;" data-bind="template: { name: 'serviceTagsTemplate', foreach: tags }">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+</div>
+<center>
+    <span class="required">*</span> indicates a required field
+</center>
+<hr />
+<div class="row" style="margin-top: 20px;">
+    <div class="col-lg-12">
+        <div class="well well-sm" style="overflow: auto;">
+            <input type="button" class="btn btn-default pull-left" onclick="window.history.back()" value="Cancel" />
+            <input type="submit" class="btn btn-success pull-right" value="Save" />
+        </div>
+    </div>
+</div>
+}
+@if (ViewBag.Saved != null)
+{
+<div id="modalSaved" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="modalTitle" class="modal-title">Saved</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success">
+                    <h4>Success!</h4>
+                    <p>
+                        Service <em>@Model.Service.Name</em> has been saved successfully!
+                    </p>
+                </div>
+            </div>
+            <div id="modalFooter" class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section scripts
+{
+    @System.Web.Optimization.Scripts.Render("~/bundles/js/knockoutjs")
+    @System.Web.Optimization.Scripts.Render("~/bundles/js/jquery-ui")
+    <script src="@Url.Content("~/Areas/Admin/Scripts/jquery.ui.timepicker.addon.js")" type="text/javascript"></script>
+    <script type="text/html" id="serviceTagsTemplate">
+        <span class="serviceTag">
+            <input type="hidden" data-bind='value: $data, attr: {"id": "Service_Tags[" + $index() + "]", "name": "Service.Tags[" + $index() + "]"}' />
+            <a href="#" class="btnRemoveServiceTag no-hover-underline" data-bind="click: function(data) { removeTag(data); }">
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+            <span data-bind="text: $data">&nbsp;</span>
+        </span>
+    </script>
+    <script type="text/javascript">
+        function convertToSlug(Text) {
+            return Text
+                .toLowerCase()
+                .replace(/[^\w ]+/g,'')
+                .replace(/ +/g,'-');
+        }
+
+        function trimWhitespace (str) {
+            return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        }
+
+        ko.bindingHandlers.returnKey = {
+            init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+                ko.utils.registerEventHandler(element, 'keydown', function(evt) {
+                    if (evt.keyCode === 13) {
+                        evt.preventDefault();
+                        evt.target.blur();
+                        valueAccessor().call(viewModel);
+                    }
+                });
+             }
+        };
+
+        var initialTags = @Html.Raw((new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.Service.Tags)));
+        function serviceTagsViewModel() {
+            var self = this;
+
+            self.tags = ko.observableArray(initialTags);
+
+            self.addTag = function () {
+                var tagValue = $("#Service_Tags").val();
+
+                if (tagValue != "") {
+                    var tagValues = tagValue.split(",");
+
+                    tagValues.forEach(function (tag) {
+                        var sanitizedTag = trimWhitespace(tag.toLowerCase());
+
+                        if ($.inArray(sanitizedTag, self.tags()) < 0)
+                            self.tags.push(sanitizedTag);
+                    });
+                }
+
+                $("#Service_Tags").val("");
+                $("#Service_Tags").focus();
+            };
+
+            self.removeTag = function (tag) {
+                this.tags.remove(tag);
+            };
+        };
+
+        ko.applyBindings(serviceTagsViewModel, document.body);
+    </script>
+    <script type="text/javascript">
+        function InitializeDateTimePicker () {
+            $(".datepicker").datetimepicker({
+                timeFormat: "hh:mm tt",
+                changeMonth: true,
+                changeYear: true
+            });
+        }
+
+        $(document).ready(function () {
+            InitializeDateTimePicker();
+            @if (ViewBag.Saved != null)
+            {
+            <text>
+            $("#modalSaved").modal("show");
+            </text>
+            }
+        });
+    </script>
+}
+@section styles
+{
+    @System.Web.Optimization.Styles.Render("~/bundles/css/jquery-ui")
+    <link rel="Stylesheet" href="@Url.Content("~/Areas/Admin/Content/timepicker.css")" />
+}

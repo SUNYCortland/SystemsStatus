@@ -1,0 +1,195 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Web.ViewModels
+@using SystemsStatus.Web.Extensions
+@model WidgetsIndexViewModel
+
+@{
+    Layout = null;
+    var iTruncateWordCount = 100;
+}
+
+@helper ProcessChildrenHTML(IEnumerable<Service> services)
+{
+    var iTruncateWordCount = 100;
+    if (services.Count() > 0)
+    {        
+        foreach(var service in services)
+        {       
+        <li class="ss-widget-entry ss-widget-bordered ss-widget-child">
+            <div class="header">
+                @if (service.CurrentStatus.GetType() == typeof(OnlineServiceStatus))
+                {
+                    var currentStatus = service.CurrentStatus as OnlineServiceStatus;
+                        
+                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url, Area = "" })" class="service-profile" target="_blank" title="Online">
+                        <span class="status online"></span>
+                        @service.Name
+                    </a>
+                    <div class="service-content">
+                        <p>Online</p>
+                    </div>
+                }
+                else if (service.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus))
+                {
+                    var currentStatus = service.CurrentStatus as OnlineDegradedServiceStatus;
+
+                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url, Area = "" })" class="service-profile" target="_blank" title="Degraded">
+                        <span class="status degraded"></span>
+                        @service.Name
+                    </a>
+                    <div class="service-content">
+                        <p>@Html.TruncateAtWord(currentStatus.Cause, iTruncateWordCount)</p>
+                    </div>
+                }
+                else if (service.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus))
+                {
+                    var currentStatus = service.CurrentStatus as OfflineMaintenanceServiceStatus;
+
+                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url, Area = "" })" class="service-profile" target="_blank" title="Maintenance">
+                        <span class="status maintenance"></span>
+                        @service.Name
+                    </a>
+                    <div class="service-content">
+                        <p>@Html.TruncateAtWord(currentStatus.ScheduledMaintenance.Description, iTruncateWordCount)</p>
+                    </div>
+                }
+                else if (service.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus))
+                {
+                    var currentStatus = service.CurrentStatus as OfflineUnplannedServiceStatus;
+
+                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url, Area = "" })" class="service-profile" target="_blank" title="Down">
+                        <span class="status down"></span>
+                        @service.Name
+                    </a>
+                    <div class="service-content">
+                        <p>@Html.TruncateAtWord(currentStatus.OfflineCause, iTruncateWordCount)</p>
+                    </div>
+                }
+            </div>
+        </li>
+        }
+    }
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Model.Widget.Name</title>
+    @System.Web.Optimization.Styles.Render("~/bundles/css/bootstrap.min")
+    @System.Web.Optimization.Styles.Render("~/bundles/css/widget")
+</head>
+<body>
+    <div class="ss-widget ss-widget-bordered">
+        <div class="ss-widget-header ss-widget-bordered">
+            <h1 class="ss-widget-name">
+                <a href="@Url.Action("Index", new { controller = "Home", area = "" })" target="_blank" title="Systems Status Homepage">
+                    @Model.Widget.Name
+                </a>
+                <span class="ss-widget-service-count">
+                    <span class="ss-widget-label ss-widget-count online" title="Services Online">@Model.Widget.Services.Where(x => x.CurrentStatus.GetType() == typeof(OnlineServiceStatus)).Count()</span>
+                    <span class="ss-widget-label ss-widget-count maintenance" title="Services in Maintenance">@Model.Widget.Services.Where(x => x.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus)).Count()</span>
+                    <span class="ss-widget-label ss-widget-count degraded" title="Services Degraded">@Model.Widget.Services.Where(x => x.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus)).Count()</span>
+                    <span class="ss-widget-label ss-widget-count down" title="Services Down">@Model.Widget.Services.Where(x => x.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus)).Count()</span>
+                </span>
+            </h1>
+        </div>
+        <div class="ss-widget-stream" style="height: @(Model.Widget.Height.ToString() + "px")">
+            <ol class="ss-widget-feed">
+                @if (Model.UpcomingMaintenance)
+                {
+                <li class="ss-widget-entry ss-widget-bordered ss-widget-notification" title="Upcoming Scheduled Maintenance">
+                    <div class="header">
+                        <a href="@Url.Action("Index", new { controller = "Maintenances" })" class="service-profile" target="_blank">
+                            <span class="status maintenance">
+                                
+                            </span>
+                            Upcoming Scheduled Maintenance
+                        </a>
+                        <div class="service-content">
+                            <a href="@Url.Action("Index", new { controller = "Maintenances" })" target="_blank">View maintenance notices</a>
+                        </div>
+                    </div>
+                </li>
+                }
+                @if (Model.Widget.Services.Count == 0)
+                {
+                <li class="ss-widget-entry ss-widget-bordered">
+                    <h4 style="color: #707070">
+                        Please select services to add.
+                    </h4>
+                </li>
+                }
+                @foreach (var service in Model.Widget.Services.Where(x => x.Parent == null))
+                {
+                <li class="ss-widget-entry ss-widget-bordered">
+                    <div class="header">
+                        @if (service.CurrentStatus.GetType() == typeof(OnlineServiceStatus))
+                        {
+                            var currentStatus = service.CurrentStatus as OnlineServiceStatus;
+                        
+                            <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url, Area = "" })" class="service-profile" target="_blank" title="Online">
+                                <span class="status online"></span>
+                                @service.Name
+                            </a>
+                            <div class="service-content">
+                                <p>Online</p>
+                            </div>
+                        }
+                        else if (service.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus))
+                        {
+                            var currentStatus = service.CurrentStatus as OnlineDegradedServiceStatus;
+
+                            <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url, Area = "" })" class="service-profile" target="_blank" title="Degraded">
+                                <span class="status degraded"></span>
+                                @service.Name
+                            </a>
+                            <div class="service-content">
+                                <p>@Html.TruncateAtWord(currentStatus.Cause, iTruncateWordCount)</p>
+                            </div>
+                        }
+                        else if (service.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus))
+                        {
+                            var currentStatus = service.CurrentStatus as OfflineMaintenanceServiceStatus;
+
+                            <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url, Area = "" })" class="service-profile" target="_blank" title="Maintenance">
+                                <span class="status maintenance"></span>
+                                @service.Name
+                            </a>
+                            <div class="service-content">
+                                <p>@Html.TruncateAtWord(currentStatus.ScheduledMaintenance.Description, iTruncateWordCount)</p>
+                            </div>
+                        }
+                        else if (service.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus))
+                        {
+                            var currentStatus = service.CurrentStatus as OfflineUnplannedServiceStatus;
+
+                            <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url, Area = "" })" class="service-profile" target="_blank" title="Down">
+                                <span class="status down"></span>
+                                @service.Name
+                            </a>
+                            <div class="service-content">
+                                <p>@Html.TruncateAtWord(currentStatus.OfflineCause, iTruncateWordCount)</p>
+                            </div>
+                        }
+                    </div>
+                </li>
+                    @ProcessChildrenHTML(Model.Widget.Services.Where(x => x.Parent == service).OrderBy(x => x.SortOrder))
+                }
+            </ol>
+        </div>
+    </div>
+    <div class="ss-widget-key">
+        <span class="ss-widget-label online">online</span>
+        <span class="ss-widget-label maintenance">maintenance</span>
+        <span class="ss-widget-label degraded">degraded</span>
+        <span class="ss-widget-label down">down</span>
+    </div>
+    <div class="ss-widget-footer">
+        <p>
+            <a href="@Url.Action("Index", new { controller = "Home" })" target="_blank">View All Services Status and Scheduled Maintenance</a>
+        </p>
+    </div>
+    </body>
+</html>

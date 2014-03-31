@@ -1,0 +1,131 @@
+﻿@using SystemsStatus.Web.Areas.Admin.ViewModels
+@using SystemsStatus.Core.Data.Entities.Statuses
+@model ServiceListChangeStatusViewModel
+
+@if (ViewBag.Saved == null)
+{
+    using (Ajax.BeginForm("ChangeServiceStatus",
+        new { id = Model.Service.Id },
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "changeServiceStatusModal",
+            OnSuccess = "changeServiceStatusSuccess",
+            LoadingElementId = "statusDetailsLoading"
+        }))
+    {
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title">Change Status</h3>
+                </div>
+                <div class="modal-body">
+                    @if (Model.Service.CurrentStatus.GetType() == typeof(OnlineServiceStatus))
+                    {
+                        var currentStatus = Model.Service.CurrentStatus as OnlineServiceStatus;
+                    
+                        <div class="alert alert-success"> 
+                            <h4 style="color: #333;">@Model.Service.Name<span class="label label-success pull-right">online</span></h4>
+                        </div>
+                    }
+                    else if (Model.Service.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus))
+                    {
+                        var currentStatus = Model.Service.CurrentStatus as OfflineUnplannedServiceStatus;
+                        <div class="alert alert-danger">
+                            <h4 style="color: #333;">@Model.Service.Name<span class="label label-danger pull-right">down</span></h4>
+                            <hr />
+                            <strong>Cause:</strong> @currentStatus.OfflineCause
+                            @if (currentStatus.ExpectedOnline.HasValue)
+                            {
+                            <br />
+                            <strong>Expected Online:</strong> @currentStatus.ExpectedOnline.Value.ToString("dddd, MMMM d - h:mm tt")
+                            }
+                        </div>
+                    }
+                    else if (Model.Service.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus))
+                    {
+                        var currentStatus = Model.Service.CurrentStatus as OfflineMaintenanceServiceStatus;
+                        <div class="alert alert-info">
+                            <h4 style="color: #333;">@Model.Service.Name<span class="label label-primary pull-right">maintenance</span></h4>
+                            <hr />
+                            <p>
+                                <strong>Description:</strong> @currentStatus.ScheduledMaintenance.Description
+                            </p>
+                            <strong>Expected Offline:</strong> @currentStatus.ScheduledMaintenance.Offline.ToString("dddd, MMMM d - h:mm tt")
+                            @if (currentStatus.ScheduledMaintenance.ExpectedOnline.HasValue)
+                            {
+                            <br />
+                            <strong>Expected Online:</strong> @currentStatus.ScheduledMaintenance.ExpectedOnline.Value.ToString("dddd, MMMM d - h:mm tt")
+                            }
+                        </div>
+                    }
+                    else if (Model.Service.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus))
+                    {
+                        var currentStatus = Model.Service.CurrentStatus as OnlineDegradedServiceStatus;
+                        <div class="alert alert-warning">
+                            <h4 style="color: #333;">@Model.Service.Name<span class="label label-warning pull-right">degraded</span></h4>
+                            <hr />
+                            <p>
+                                <strong>Cause:</strong> @currentStatus.Cause
+                            </p>
+                            <strong>Degraded Since:</strong> @currentStatus.DegradedSince.ToString("dddd, MMMM d - h:mm tt")
+                            @if (currentStatus.ExpectedOnline.HasValue)
+                            {
+                            <br />
+                            <strong>Expected Normal:</strong> @currentStatus.ExpectedOnline.Value.ToString("dddd, MMMM d - h:mm tt")
+                            }
+                        </div>
+                    }
+                    <p>
+                        Select the appropriate status, fill out the following fields and click on 'Change Status'.
+                    </p>
+                    <fieldset>
+                        <legend>
+                            Status Details <span id="statusDetailsLoading" class="pull-right" style="display: none;"><img src="@Url.Content("~/Images/ajax_loader.gif")" alt="Loading..." /></span>
+                        </legend>
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="ddlStatusTypes" class="col-lg-3">Status Type<span class="required"> *</span></label>
+                                <div class="col-lg-9">
+                                    <select id="ddlStatusTypes" name="StatusType" class="form-control">
+                                        <option value="online" @(String.IsNullOrWhiteSpace(Model.StatusType) || Model.StatusType == "online" ? "selected='selected'" : "")>Online</option>
+                                        <option value="offline" @(Model.StatusType == "offline" ? "selected='selected'" : "")>Down</option>
+                                        <option value="offlineMaintenance" @(Model.StatusType == "offlineMaintenance" ? "selected='selected'" : "")>Maintenance</option>
+                                        <option value="onlineDegraded" @(Model.StatusType == "onlineDegraded" ? "selected='selected'" : "")>Degraded</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <section id="serviceStatus">
+                                @if (String.IsNullOrWhiteSpace(Model.StatusType) || Model.StatusType == "online")
+                                {
+                                    @Html.Partial("_ServiceList_ChangeStatus_OnlineServiceStatus", Model)
+                                }
+                                else if (Model.StatusType == "offline")
+                                {
+                                    @Html.Partial("_ServiceList_ChangeStatus_OfflineUnplannedServiceStatus", Model)
+                                }
+                                else if (Model.StatusType == "offlineMaintenance")
+                                {   
+                                    @Html.Partial("_ServiceList_ChangeStatus_OfflineMaintenanceServiceStatus", Model)
+                                }
+                                else if (Model.StatusType == "onlineDegraded")
+                                {   
+                                    @Html.Partial("_ServiceList_ChangeStatus_OnlineDegradedServiceStatus", Model)
+                                }
+                            </section>
+                        </div>
+                        <center>
+                            <span class="required">*</span> indicates a required field
+                        </center>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnChangeServiceStatus" class="btn btn-md btn-success">Change Status</button>
+                    <a href="#" class="btn btn-md btn-danger" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </div>
+    }
+}

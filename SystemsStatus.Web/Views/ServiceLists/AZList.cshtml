@@ -1,0 +1,175 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Common.Pagination
+@using SystemsStatus.Web.Extensions
+@model IPagedList<Service>
+@{
+    ViewBag.Title = "A-Z List - Systems Status - SUNY Cortland";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+@section breadcrumb
+{
+<ol class="breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li class="active">
+        A-Z Service List
+    </li>
+</ol>
+}
+<div class="row contentContainer">
+    <div class="col-md-12 contentHeader">
+        <h4>
+            <span class="glyphicon glyphicon-stats"></span> SUNY Cortland System Status
+        </h4>
+    </div>
+    <div class="col-md-12 content">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <fieldset>
+                    <legend style="margin-bottom: 15px;">
+                        A-Z Service List
+                    </legend>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-7"></div>
+                                <div class="col-lg-5">
+                                    <div class="input-group" style="margin-bottom: 10px;">
+                                        <input type="text" id="txtSearch" value="@Request.Params["query"]" class="form-control input-sm" placeholder="Search..." />
+                                        <span class="input-group-btn">
+                                            <button id="btnSearch" class="btn btn-default btn-sm" type="button">
+                                                <span class="glyphicon glyphicon-search"></span>
+                                            </button>
+                                            <button id="btnClearSearch" class="btn btn-danger btn-sm" type="button">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" style="line-height: 30px;">
+                            <div class="pull-left">
+                                <p>
+                                    Showing services (@Model.ItemStart - @Model.ItemEnd) of @Model.TotalItemCount
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" style="line-height: 30px;">
+                            <div class="pull-right">
+                                <strong>Filter: </strong>
+                                <a class="label label-default @(ViewContext.RouteData.Values["display"].ToString().ToLower() == "all" ? "label-lg" : "")" href="@Url.RouteUrl("ServiceLists_AZList_FirstPage", new { display = "All", query = Request.Params["query"] })">all</a>
+
+                                <a class="label label-success @(ViewContext.RouteData.Values["display"].ToString().ToLower() == "online" ? "label-lg" : "")" href="@Url.RouteUrl("ServiceLists_AZList_FirstPage", new { display = "Online", query = Request.Params["query"] })">online</a>
+
+                                <a class="label label-primary @(ViewContext.RouteData.Values["display"].ToString().ToLower() == "maintenance" ? "label-lg" : "")" href="@Url.RouteUrl("ServiceLists_AZList_FirstPage", new { display = "Maintenance", query = Request.Params["query"] })">maintenance</a>
+    
+                                <a class="label label-warning @(ViewContext.RouteData.Values["display"].ToString().ToLower() == "degraded" ? "label-lg" : "")" href="@Url.RouteUrl("ServiceLists_AZList_FirstPage", new { display = "Degraded", query = Request.Params["query"] })">degraded</a>
+
+                                <a class="label label-danger @(ViewContext.RouteData.Values["display"].ToString().ToLower() == "down" ? "label-lg" : "")" href="@Url.RouteUrl("ServiceLists_AZList_FirstPage", new { display = "Down", query = Request.Params["query"] })">down</a>
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.Count() == 0)
+                    {
+                        if (ViewContext.RouteData.Values["display"].ToString().ToLower() == "all")
+                        {
+                        <p>
+                            There are currently no services.
+                        </p>
+                        }
+                        else
+                        {
+                        <p>
+                            There are currently no services with status '@ViewContext.RouteData.Values["display"].ToString().ToLower()'
+                        </p>
+                        }
+                    }
+                    else
+                    {
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Service</th>
+                                <th style="width: 40%;">Description</th>
+                                <th style="width: 22%">Department</th>
+                                <th style="width: 13%;">Current Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var service in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                                    </td>
+                                    <td>@service.Description</td>
+                                    <td>
+                                        @if (service.Department != null)
+                                        {
+                                            @service.Department.Name
+                                        }
+                                    </td>
+                                    <td style="text-align: center">
+                                        @if (service.CurrentStatus.GetType() == typeof(OnlineServiceStatus))
+                                        {
+                                            var currentStatus = service.CurrentStatus as OnlineServiceStatus;
+                                            <span class="label label-success">online</span>
+                                        }
+                                        else if (service.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus))
+                                        {
+                                            var currentStatus = service.CurrentStatus as OfflineUnplannedServiceStatus;
+                                            <span class="label label-danger">down</span>
+                                        }
+                                        else if (service.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus))
+                                        {
+                                            var currentStatus = service.CurrentStatus as OfflineMaintenanceServiceStatus;
+                                            <span class="label label-primary">maintenance</span>
+                                        }
+                                        else if (service.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus))
+                                        {
+                                            var currentStatus = service.CurrentStatus as OnlineDegradedServiceStatus;
+                                            <span class="label label-warning">degraded</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(o => o.DisplayTemplate("_BootstrapPagination"))  
+                    }
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnClearSearch").on("click", function () {
+                document.location.search = "";
+            });
+
+            $("#btnSearch").on("click", function () {
+                var strQuery = $("#txtSearch").val();
+
+                if (strQuery != null && strQuery != "") {
+                    document.location.search = "?query=" + strQuery;
+                }
+
+                return false;
+            });
+
+            $("#txtSearch").on("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    $("#btnSearch").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+}

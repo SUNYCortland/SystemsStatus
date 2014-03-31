@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns="http://cortland.edu/Departments.xsd" 
+           xmlns:mstns="http://cortland.edu/Departments.xsd"
+           targetNamespace="http://cortland.edu/Departments.xsd" 
+           elementFormDefault="qualified"
+>
+    <xs:element name="Departments">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Department" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Name" minOccurs="1" maxOccurs="1">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="1" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Code" minOccurs="1" maxOccurs="1">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="1" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:unique name="uniqueCode">
+            <xs:selector xpath="mstns:Department"></xs:selector>
+            <xs:field xpath="mstns:Code"></xs:field>
+        </xs:unique>
+    </xs:element>
+</xs:schema>

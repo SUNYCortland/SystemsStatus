@@ -1,0 +1,98 @@
+﻿@using SystemsStatus.Core.Data.Entities;
+@using SystemsStatus.Core.Data.Entities.Statuses;
+@using SystemsStatus.Web.Extensions;
+@using SystemsStatus.Web.ViewModels
+@model HomeIndexViewModel
+@{
+    ViewBag.Title = "Systems Status - SUNY Cortland";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+<div class="row contentContainer">
+    <div class="col-md-12 contentHeader">
+        <h4>
+            <span class="glyphicon glyphicon-stats"></span> SUNY Cortland System Status
+        </h4>
+    </div>
+    <div class="col-md-12 content">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" style="margin-bottom: 15px;">
+                <fieldset>
+                    <legend>
+                        Services
+                    </legend>
+                    <div class="pull-left">
+                        <a href="@Url.Action("AZList", new { controller = "ServiceLists" })" class="btn btn-xs btn-default">A-Z List</a>
+                    </div>
+                    <div id="statusKey" class="pull-right">
+                        <strong>Key: </strong>
+                        <span class="label label-success">online</span>
+                        <span class="label label-danger">down</span>
+                        <span class="label label-primary">maintenance</span>
+                        <span class="label label-warning">degraded</span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div id="servicesDashboard">
+                        @Html.Partial("_ServicesDashboard", Model.Services)
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <fieldset>
+                    <legend>
+                        Report an Issue
+                    </legend>
+                    <p>
+                        If you arrived here instead of the service site you were expecting, that service may be temporarily unavailable.
+                    </p>
+                    <p>
+                        Please check the list to the left for details or notify the Information Resources Support Center (irsc <em>at</em> cortland.edu) of an unreported issue.
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        Scheduled Maintenance
+                    </legend>
+                    @if (Model.Maintenances.Count() == 0)
+                    {
+                    <p>
+                        No upcoming scheduled maintenance.
+                    </p>
+                    }
+                    else
+                    {
+                        foreach (var maintenance in Model.Maintenances)
+                        {
+                            <div style="margin-bottom: 20px;">
+                                <h5 style="font-weight: bold;">
+                                    @maintenance.Service.Name
+                                </h5>
+                                <p>
+                                    @maintenance.Description
+                                </p>
+                                <p>
+                                    <em>Offline</em>: @maintenance.Offline.ToString("MM/dd/yyyy hh:mm tt")
+                                    <br />
+                                    @if (maintenance.ExpectedOnline.HasValue)
+                                    {
+                                        <text>
+                                        <em>Expected Online</em>: 
+                                        </text>    
+                                        @maintenance.ExpectedOnline.Value.ToString("MM/dd/yyyy hh:mm tt")
+                                    }
+                                    
+                                </p>
+                            </div>
+                        }
+                        <div class="pull-right">
+                            <a href="@Url.RouteUrl("ScheduledMaintenances_FirstPage")" class="btn btn-sm btn-default">View All...</a>
+                        </div>
+                    }
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+
+}

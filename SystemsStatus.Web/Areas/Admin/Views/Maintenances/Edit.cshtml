@@ -1,0 +1,140 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Web.Extensions
+@model ScheduledMaintenance
+
+@{
+    ViewBag.Title = "Edit Maintenance - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Maintenances";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Maintenances" })">Maintenances</a>
+    </li>
+    <li class="active">Edit Maintenance</li>
+</ol>
+<h1>Edit Maintenance</h1>
+<p>
+    Make any changes to this scheduled maintenance and click 'Save'.
+</p>
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Maintenance Details
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Name, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Enter a maintenance name", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Name)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Description, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control", placeholder = "Enter a maintenance description", autocomplete = "off", rows = "7" })
+                        @Html.ValidationMessageFor(x => x.Description)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Maintenance Times
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Offline, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Offline, "{0:MM/dd/yyyy hh:mm tt}", new { @class = "form-control datepicker", placeholder = "Enter an offline date and time", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Offline)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.ExpectedOnline, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.ExpectedOnline, "{0:MM/dd/yyyy hh:mm tt}", new { @class = "form-control datepicker", placeholder = "Enter an expected online date and time", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.ExpectedOnline)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<center>
+    <span class="required">*</span> indicates a required field
+</center>
+<hr />
+<div class="row" style="margin-top: 20px;">
+    <div class="col-lg-12">
+        <div class="well well-sm" style="overflow: auto;">
+            <input type="button" class="btn btn-default pull-left" onclick="window.history.back()" value="Cancel" />
+            <input type="submit" class="btn btn-success pull-right" value="Save" />
+        </div>
+    </div>
+</div>
+}
+@if (ViewBag.Saved != null)
+{
+<div id="modalSaved" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="modalTitle" class="modal-title">Saved</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success">
+                    <h4>Success!</h4>
+                    <p>
+                        Scheduled maintenance has been saved successfully!
+                    </p>
+                </div>
+            </div>
+            <div id="modalFooter" class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section scripts
+{
+    @System.Web.Optimization.Scripts.Render("~/bundles/js/jquery-ui")
+    <script src="@Url.Content("~/Areas/Admin/Scripts/jquery.ui.timepicker.addon.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        function InitializeDateTimePicker () {
+            $(".datepicker").datetimepicker({
+                timeFormat: "hh:mm tt",
+                changeMonth: true,
+                changeYear: true
+            });
+        }
+
+        $(document).ready(function () {
+            InitializeDateTimePicker();
+            @if (ViewBag.Saved != null)
+            {
+            <text>
+            $("#modalSaved").modal("show");
+            </text>
+            }
+        });
+    </script>
+}
+@section styles
+{
+    @System.Web.Optimization.Styles.Render("~/bundles/css/jquery-ui")
+    <link rel="Stylesheet" href="@Url.Content("~/Areas/Admin/Content/timepicker.css")" />
+}

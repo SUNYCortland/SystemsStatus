@@ -1,0 +1,190 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Web.Areas.Admin.ViewModels
+@using SystemsStatus.Web.Extensions
+@model HomeIndexViewModel
+
+@{
+    ViewBag.Title = "Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Home";
+}
+
+<h1>Systems Status</h1>
+<p>
+    Manage and maintain current system services, scheduled maintenances, and downtime.
+</p>
+<div class="row">
+    @if (Model.Services.Count() > 0)
+    {
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Percentages
+            </legend>
+            <div class="pull-right" style="margin-bottom: 20px;">
+                <div class="pull-left alert-success" style="padding: 5px;">
+                    Healthy
+                </div>
+                <div class="pull-left alert-warning" style="padding: 5px;">
+                    Unhealthy
+                </div>
+                <div class="pull-left alert-danger" style="padding: 5px;">
+                    Critical
+                </div>
+            </div>
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Service</th>
+                        <th style="width: 15%;">Online</th>
+                        <th style="width: 15%;">Down</th>
+                        <th style="width: 15%;">Degraded</th>
+                        <th style="width: 15%;">Maintenance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var service in Model.Services)
+                {
+                    <tr>
+                        <td>@service.Name</td>
+                        @if (service.PercentOnline >= 0.75)
+                        {
+                        <td class="success">@Html.ToPercentage(service.PercentOnline)</td>
+                        }
+                        else if (service.PercentOnline < 0.75 && service.PercentOnline >= 0.25)
+                        {
+                        <td class="warning">@Html.ToPercentage(service.PercentOnline)</td>
+                        }
+                        else
+                        {
+                        <td class="danger">@Html.ToPercentage(service.PercentOnline)</td>
+                        }
+
+                        @if (service.PercentOffline >= 0.75)
+                        {
+                        <td class="danger">@Html.ToPercentage(service.PercentOffline)</td>
+                        }
+                        else if (service.PercentOffline < 0.75 && service.PercentOffline >= 0.25)
+                        {
+                        <td class="warning">@Html.ToPercentage(service.PercentOffline)</td>
+                        }
+                        else
+                        {
+                        <td class="success">@Html.ToPercentage(service.PercentOffline)</td>
+                        }
+
+                        @if (service.PercentDegraded >= 0.75)
+                        {
+                        <td class="danger">@Html.ToPercentage(service.PercentDegraded)</td>
+                        }
+                        else if (service.PercentDegraded < 0.75 && service.PercentDegraded >= 0.25)
+                        {
+                        <td class="warning">@Html.ToPercentage(service.PercentDegraded)</td>
+                        }
+                        else
+                        {
+                        <td class="success">@Html.ToPercentage(service.PercentDegraded)</td>
+                        }
+
+                        @if (service.PercentMaintenance >= 0.75)
+                        {
+                        <td class="danger">@Html.ToPercentage(service.PercentMaintenance)</td>
+                        }
+                        else if (service.PercentMaintenance < 0.75 && service.PercentMaintenance >= 0.25)
+                        {
+                        <td class="warning">@Html.ToPercentage(service.PercentMaintenance)</td>
+                        }
+                        else
+                        {
+                        <td class="success">@Html.ToPercentage(service.PercentMaintenance)</td>
+                        }
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Current System Status
+            </legend>
+            <div id="servicesStatusChart">
+        
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>
+                Upcoming Maintenances
+                <span class="label label-primary pull-right">@Model.Maintenances.Count()</span>
+            </legend>
+            @if (Model.Maintenances.Count() == 0)
+            {
+                <p>
+                    There are currently no scheduled maintenances.
+                </p>
+            }
+            else
+            {
+                foreach (var maintenance in Model.Maintenances)
+                {
+                    <div style="margin-bottom: 20px;">
+                        <strong style="font-sze: 14px;">
+                            @maintenance.Service.Name
+                        </strong>
+                        <p>
+                            @maintenance.Description
+                        </p>
+                        <p>
+                            <em>Offline</em>: @maintenance.Offline.ToString("MM/dd/yyyy hh:mm tt")
+                            @if(maintenance.ExpectedOnline.HasValue)
+                            {
+                                <text>
+                                <br />
+                                <em>Expected Online</em>: 
+                                </text>
+                                @maintenance.ExpectedOnline.Value.ToString("MM/dd/yyyy hh:mm tt")
+                            }
+                        </p>
+                    </div>
+                }
+                <a href="@Url.Action("Index", new { controller = "Maintenances" })" class="btn btn-sm btn-default pull-right">View All...</a>
+            }
+        </fieldset>
+    </div>
+    }
+</div>
+@section scripts
+{
+    @if (Model.Services.Count() > 0)
+    {
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", { packages: ["corechart"] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                  ['Status', 'Services in Status'],
+                  ['Online', @Model.Services.Where(x => x.CurrentStatus.GetType() == typeof(OnlineServiceStatus)).Count()],
+                  ['Maintenance', @Model.Services.Where(x => x.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus)).Count()],
+                  ['Down', @Model.Services.Where(x => x.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus)).Count()],
+                  ['Degraded', @Model.Services.Where(x => x.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus)).Count()]
+            ]);
+
+            var options = {
+                is3D: true,
+                slices: { 
+                    0: { color: "#5cb85c" },
+                    1: { color: "#428bca" },
+                    2: { color: "#d9534f" },
+                    3: { color: "#f0ad4e" }
+                }
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById("servicesStatusChart"));
+            chart.draw(data, options);
+        }
+    </script>
+    }
+}

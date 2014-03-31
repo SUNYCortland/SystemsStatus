@@ -1,0 +1,137 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Common.Pagination
+@using SystemsStatus.Web.Extensions
+
+@model IPagedList<Department>
+
+@{
+    ViewBag.Title = "Departments - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Departments";
+    ViewBag.DashboardSubMenuActive = "Department List";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.RouteUrl("Admin_Departments_FirstPage")">Departments</a>
+    </li>
+    <li class="active">Department List</li>
+</ol>
+<h1>Department List</h1>
+@if (Model.Count() == 0)
+{
+    <p>
+        There are currently no departments.
+    </p>
+    <p>
+        Click on Departments -> Create Department to create a department, or use the import feature to import csv, xml, or json file.
+    </p>
+}
+else
+{
+<div class="row">
+    <div class="col-lg-5">
+        <p class="pull-left" style="line-height: 30px;">
+            Showing departments (@Model.ItemStart - @Model.ItemEnd) of @Model.TotalItemCount
+        </p>
+    </div>
+    <div class="col-lg-2"></div>
+    <div class="col-lg-5">
+        <div class="pull-right">
+            <div class="input-group" style="margin-bottom: 10px;">
+                <input type="text" id="txtSearch" value="@Request.Params["query"]" class="form-control input-sm" placeholder="Search departments..." />
+                <span class="input-group-btn">
+                    <button id="btnSearch" class="btn btn-default btn-sm" type="button">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <button id="btnClearSearch" class="btn btn-danger btn-sm" type="button">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="width: 70%;">Name</th>
+            <th style="width: 10%;">Code</th>
+            <th style="width: 10%;"># of Services</th>
+            <th style="width: 10%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var department in Model)
+        {
+            <tr>
+                <td>@department.Name</td>
+                <td style="text-align: center;">@department.Code</td>
+                <td style="text-align: center;">@department.Services.Count()</td>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("Edit", new { id = department.Id })" class="btn btn-xs btn-default" title="Edit Department"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="@Url.Action("Delete", new { id = department.Id, page = Model.PageNumber })" class="btn btn-xs btn-danger btnDeleteDepartment" title="Delete Department"><span class="glyphicon glyphicon-remove"></span></a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(o => o.DisplayTemplate("_BootstrapPagination"))  
+}
+<div id="confirmDeleteModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Are you sure?</h4>
+            </div>
+            <div id="modalBody" class="modal-body">
+                <p>
+                    Are you sure you want to delete this department?
+                </p>
+            </div>
+            <div id="modalFooter" class="modal-footer">
+                <a href="#" id="btnConfirmDelete" class="btn btn-md btn-default">Delete</a>
+                <a href="#" class="btn btn-md btn-danger" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".btnDeleteDepartment").on("click", function (e) {
+                e.preventDefault();
+
+                $("#btnConfirmDelete").attr("href", $(this).attr("href"));
+
+                $("#confirmDeleteModal").modal("show");
+            });
+
+            $("#btnClearSearch").on("click", function () {
+                document.location.search = "";
+            });
+
+            $("#btnSearch").on("click", function () {
+                var strQuery = $("#txtSearch").val();
+
+                if (strQuery != null && strQuery != "") {
+                    document.location.search = "?query=" + strQuery;
+                }
+
+                return false;
+            });
+
+            $("#txtSearch").on("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    $("#btnSearch").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+}

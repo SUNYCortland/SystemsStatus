@@ -1,0 +1,33 @@
+﻿@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Web.Extensions
+@model OfflineUnplannedServiceStatus
+
+@Html.HiddenFor(x => x.Id)
+<div class="form-group">
+    @Html.LabelForRequired(x => x.Name, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Enter a status name", autocomplete = "off" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelForRequired(x => x.OfflineCause, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextAreaFor(x => x.OfflineCause, new { @class = "form-control", placeholder = "Enter a cause", autocomplete = "off", rows = "7" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelForRequired(x => x.OfflineSince, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextBoxFor(x => x.OfflineSince, "{0:MM/dd/yyyy hh:mm tt}", new { @class = "form-control datepicker", placeholder = "Select a date/time since this service has been down", autocomplete = "off" })
+        @Html.ValidationMessageFor(x => x.OfflineSince)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(x => x.ExpectedOnline, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextBoxFor(x => x.ExpectedOnline, "{0:MM/dd/yyyy hh:mm tt}", new { @class = "form-control datepicker", placeholder = "Select an expected online time", autocomplete = "off" })
+        @Html.ValidationMessageFor(x => x.ExpectedOnline)
+    </div>
+</div>

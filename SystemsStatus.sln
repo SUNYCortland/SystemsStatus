@@ -1,0 +1,87 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemsStatus.Web", "SystemsStatus.Web\SystemsStatus.Web.csproj", "{D42D40C3-6B36-4879-8E76-A614C1146007}"
+	GlobalSection(PlasticSccProperties) = preSolution
+		ControlledByPlastic = True
+		SccProvider = Plastic SCM
+	EndGlobalSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemsStatus.Core", "SystemsStatus.Core\SystemsStatus.Core.csproj", "{2B140A80-4B7F-4937-9000-AD1A57849050}"
+	GlobalSection(PlasticSccProperties) = preSolution
+		ControlledByPlastic = True
+		SccProvider = Plastic SCM
+	EndGlobalSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemsStatus.Dependency", "SystemsStatus.Dependency\SystemsStatus.Dependency.csproj", "{76B29B8A-11DC-448B-A45F-467D785A1308}"
+	GlobalSection(PlasticSccProperties) = preSolution
+		ControlledByPlastic = True
+		SccProvider = Plastic SCM
+	EndGlobalSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemsStatus.Common", "SystemsStatus.Common\SystemsStatus.Common.csproj", "{1AEA2C44-8C4B-47C2-937B-F757BF24392B}"
+	GlobalSection(PlasticSccProperties) = preSolution
+		ControlledByPlastic = True
+		SccProvider = Plastic SCM
+	EndGlobalSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemsStatus.Data", "SystemsStatus.Data\SystemsStatus.Data.csproj", "{57EC5CEF-FD2B-4635-9BC6-612A639455E2}"
+	GlobalSection(PlasticSccProperties) = preSolution
+		ControlledByPlastic = True
+		SccProvider = Plastic SCM
+	EndGlobalSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3AF7ED55-EE13-4F2D-9D5E-FF49D5D529D9}"
+	GlobalSection(PlasticSccProperties) = preSolution
+		ControlledByPlastic = True
+		SccProvider = Plastic SCM
+	EndGlobalSection
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemsStatus.DTO", "SystemsStatus.DTO\SystemsStatus.DTO.csproj", "{5C64DBC2-B5EB-4E67-A0DD-5E5449033A8C}"
+	GlobalSection(PlasticSccProperties) = preSolution
+		ControlledByPlastic = True
+		SccProvider = Plastic SCM
+	EndGlobalSection
+EndProject
+Global
+	GlobalSection(PlasticSccProperties) = preSolution
+		ControlledByPlastic = True
+		SccProvider = Plastic SCM
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D42D40C3-6B36-4879-8E76-A614C1146007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42D40C3-6B36-4879-8E76-A614C1146007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42D40C3-6B36-4879-8E76-A614C1146007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42D40C3-6B36-4879-8E76-A614C1146007}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B140A80-4B7F-4937-9000-AD1A57849050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B140A80-4B7F-4937-9000-AD1A57849050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B140A80-4B7F-4937-9000-AD1A57849050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B140A80-4B7F-4937-9000-AD1A57849050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76B29B8A-11DC-448B-A45F-467D785A1308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76B29B8A-11DC-448B-A45F-467D785A1308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76B29B8A-11DC-448B-A45F-467D785A1308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76B29B8A-11DC-448B-A45F-467D785A1308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AEA2C44-8C4B-47C2-937B-F757BF24392B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AEA2C44-8C4B-47C2-937B-F757BF24392B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AEA2C44-8C4B-47C2-937B-F757BF24392B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AEA2C44-8C4B-47C2-937B-F757BF24392B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57EC5CEF-FD2B-4635-9BC6-612A639455E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57EC5CEF-FD2B-4635-9BC6-612A639455E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57EC5CEF-FD2B-4635-9BC6-612A639455E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57EC5CEF-FD2B-4635-9BC6-612A639455E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C64DBC2-B5EB-4E67-A0DD-5E5449033A8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C64DBC2-B5EB-4E67-A0DD-5E5449033A8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C64DBC2-B5EB-4E67-A0DD-5E5449033A8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C64DBC2-B5EB-4E67-A0DD-5E5449033A8C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

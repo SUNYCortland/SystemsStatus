@@ -1,0 +1,99 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@model IEnumerable<Service>
+
+@{
+    ViewBag.Title = "Service Hierarchy - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Services";
+    ViewBag.DashboardSubMenuActive = "Hierarchy";
+}
+
+@helper ProcessChildrenHTML(IEnumerable<Service> services)
+{
+    if (services.Count() > 0)
+    {
+        <ol class="dd-list">
+        @foreach (var service in services)
+        {
+            <li class="dd-item" data-Id="@service.Id">
+                @if(User.IsInRole("Administrator"))
+                {
+                    <div class="dd-handle dd3-handle"></div>
+                }
+                <div class="dd3-content">
+                    @service.Name
+                </div>
+                @ProcessChildrenHTML(service.Children.OrderBy(x => x.SortOrder).ToList())
+            </li>
+        }
+        </ol>
+    }
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Services" })">Services</a>
+    </li>
+    <li class="active">Hierarchy</li>
+</ol>
+<h1>Services Hierarchy</h1>
+<p>
+    Drag and drop each service to create a hierarchy of services. You can also sort the order of services below.
+</p>
+<div class="cf nestable-lists">
+    <div class="dd" id="nestable">
+        <ol class="dd-list">
+            @foreach (var service in Model)
+            {
+                <li class="dd-item" data-Id="@service.Id">
+                    @if(User.IsInRole("Administrator"))
+                    {
+                        <div class="dd-handle dd3-handle"></div>
+                    }
+                    <div class="dd3-content">
+                        @service.Name
+                    </div>
+                    @ProcessChildrenHTML(service.Children.OrderBy(x => x.SortOrder).ToList())
+                </li>
+            }
+        </ol>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/Areas/Admin/Scripts/jquery.nestable.js")"></script>
+    <script type="text/javascript">
+        function SaveHierarchy(Id, ParentId, SortOrder) {
+            $.ajaxRequest(
+                "@Url.Action("Hierarchy")",
+                "POST",
+                JSON.stringify({ Id: Id, ParentId: ParentId, SortOrder: SortOrder }),
+                function(data){},
+                function(status){}
+            );
+        }
+
+        $(document).ready(function () {
+            var nestableOptions = {
+                maxDepth: 2
+            };
+
+            $("#nestable").nestable(nestableOptions).on("change", ".dd-item", function(e) {
+                e.stopPropagation();
+
+                var id = $(this).data("id");
+                var parentId = $(this).parents(".dd-item").data("id");
+
+                SaveHierarchy(id, parentId, $("#nestable").nestable("serialize"));
+            });
+        });
+    </script>
+}
+@section styles
+{
+    <link href="@Url.Content("~/Areas/Admin/Content/nestable.css")" rel="Stylesheet" />
+}

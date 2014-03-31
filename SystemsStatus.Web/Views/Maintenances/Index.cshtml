@@ -1,0 +1,86 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Common.Pagination
+@using SystemsStatus.Web.Extensions
+@model IPagedList<ScheduledMaintenance>
+
+@{
+    ViewBag.Title = "Scheduled Maintenances - System Status - SUNY Cortland";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+@section breadcrumb
+{
+<ol class="breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li class="active">
+        Scheduled Maintenances
+    </li>
+</ol>
+}
+<div class="row contentContainer">
+    <div class="col-md-12 contentHeader">
+        <h4>
+            <span class="glyphicon glyphicon-stats"></span> SUNY Cortland System Status - Scheduled Maintenances
+        </h4>
+    </div>
+    <div class="col-md-12 content">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <fieldset>
+                    <legend>
+                        Scheduled Maintenances
+                    </legend>
+                    <p>
+                        Showing scheduled maintenances (@Model.ItemStart - @Model.ItemEnd) of @Model.TotalItemCount
+                    </p>
+                    @if (Model.Count() == 0)
+                    {
+                    <p>
+                        There are currently no scheduled maintenances.
+                    </p>
+                    }
+                    else
+                    {
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 35%;">Service</th>
+                                <th style="width: 45%;">Description</th>
+                                <th style="width: 10%;">Offline</th>
+                                <th style="width: 10%;">Expected Online</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var maintenance in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = maintenance.Service.Url })">
+                                        @maintenance.Service.Name
+                                    </a>
+                                </td>
+                                <td>
+                                    @maintenance.Description
+                                </td>
+                                <td style="text-align: center;">
+                                    @maintenance.Offline.ToString("MM/dd/yyyy hh:mm tt")
+                                </td>
+                                <td style="text-align: center;">
+                                    @if (maintenance.ExpectedOnline.HasValue)
+                                    {
+                                        @maintenance.ExpectedOnline.Value.ToString("MM/dd/yyyy hh:mm tt")
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                    @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(o => o.DisplayTemplate("_BootstrapPagination"))  
+                    }
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

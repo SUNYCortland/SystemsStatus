@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Error - Internal Server Error - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        Errors
+    </li>
+    <li class="active">Internal Server Error</li>
+</ol>
+<h2><span class="glyphicon glyphicon-warning-sign"></span> Error</h2>
+<div class="alert alert-block alert-danger">
+    <p>
+        You have encountered an internal server error. 
+        <br /><br />
+        If this problem persists, please contact the systems administrator.
+    </p>
+</div>

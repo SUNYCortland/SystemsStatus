@@ -1,0 +1,139 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Web.Areas.Admin.ViewModels
+@using SystemsStatus.Web.Extensions
+@model UsersEditViewModel
+
+@{
+    ViewBag.Title = Model.User.FirstName + " " + Model.User.LastName + " - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Users";
+    ViewBag.DashboardSubMenuActive = "Edit User";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Users" })">Users</a>
+    </li>
+    <li class="active">@Model.User.FirstName @Model.User.LastName</li>
+</ol>
+<h1>Edit @Model.User.FirstName @Model.User.LastName</h1>
+<p>
+    Make any changes to this user and click 'Save'.
+</p>
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                User Details
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.User.FirstName, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.User.FirstName, new { @class = "form-control", placeholder = "Enter a first name", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.User.FirstName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.User.LastName, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.User.LastName, new { @class = "form-control", placeholder = "Enter a last name", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.User.LastName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.User.Username, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.User.Username, new { @class = "form-control", placeholder = "Enter a username", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.User.Username)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.User.Role, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.DropDownListFor(x => x.User.Role.Id, Model.Roles.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.Value.ToString() }), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.User.Role)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.User.Active, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.CheckBoxFor(x => x.User.Active)
+                        @Html.ValidationMessageFor(x => x.User.Active)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Services Owned
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.User.Services, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.ListBoxFor(x => x.ServiceIds, Model.Services.OrderBy(x => x.Name).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.Value.ToString() }), new { @class = "form-control", style = "height: 200px" })
+                        @Html.ValidationMessageFor(x => x.ServiceIds)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<center>
+    <span class="required">*</span> indicates a required field
+</center>
+<hr />
+<div class="row" style="margin-top: 20px;">
+    <div class="col-lg-12">
+        <div class="well well-sm" style="overflow: auto;">
+            <input type="button" class="btn btn-default pull-left" onclick="window.history.back()" value="Cancel" />
+            <input type="submit" class="btn btn-success pull-right" value="Save User" />
+        </div>
+    </div>
+</div>
+}
+@if (ViewBag.Saved != null)
+{
+<div id="modalSaved" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="modalTitle" class="modal-title">Saved</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success">
+                    <h4>Success!</h4>
+                    <p>
+                        User <em>@Model.User.FirstName @Model.User.LastName</em> has been saved successfully!
+                    </p>
+                </div>
+            </div>
+            <div id="modalFooter" class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            @if (ViewBag.Saved != null)
+            {
+            <text>
+            $("#modalSaved").modal("show");
+            </text>
+            }
+        });
+    </script>
+}

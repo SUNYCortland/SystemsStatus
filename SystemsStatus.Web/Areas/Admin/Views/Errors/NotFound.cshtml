@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Error - Not Found - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        Errors
+    </li>
+    <li class="active">Not Found</li>
+</ol>
+<h2><span class="glyphicon glyphicon-warning-sign"></span> Error</h2>
+<div class="alert alert-block alert-warning">
+    <p>
+        The resource you are looking for has either moved, been deleted, or never exists. 
+        <br /><br />
+        If this is unexpected, please contact the systems administrator.
+    </p>
+</div>

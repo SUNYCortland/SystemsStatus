@@ -1,0 +1,36 @@
+﻿@model IList<string>
+
+@{
+    ViewBag.Title = "Import Departments - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Departments";
+    ViewBag.DashboardSubMenuActive = "Import";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.RouteUrl("Admin_Departments_FirstPage")">Departments</a>
+    </li>
+    <li class="active">Import Departments</li>
+</ol>
+<h1>Imported Departments</h1>
+<div class="alert alert-block alert-danger">
+    Department import failed due to the following errors:
+</div>
+<h4>Errors:</h4>
+<ul>
+    @foreach (var error in Model)
+    {
+        <li>@error</li>
+    }
+</ul>
+<div class="row" style="margin-top: 20px;">
+    <div class="col-lg-12">
+        <div class="well well-sm" style="overflow: auto;">
+            <a href="#" onclick="window.history.back()" class="btn btn-md btn-default pull-right">Back</a>
+        </div>
+    </div>
+</div>

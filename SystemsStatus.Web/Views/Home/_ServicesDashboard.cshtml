@@ -1,0 +1,136 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@model IEnumerable<Service>
+
+@helper ProcessChildrenHTML(IEnumerable<Service> services)
+{
+    if (services.Count() > 0)
+    {               
+        <div class="serviceChildren">
+            <div class="row">
+            @foreach (var service in services)
+            {
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 5px;">
+                @if (service.CurrentStatus.GetType() == typeof(OnlineServiceStatus))
+                {
+                    var currentStatus = service.CurrentStatus as OnlineServiceStatus;
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <span class="pull-right label label-success">online</span>
+                        </div>
+                    </div>
+                }
+                else if (service.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus))
+                {
+                    var currentStatus = service.CurrentStatus as OfflineUnplannedServiceStatus;
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <span class="pull-right label label-danger">down</span>
+                        </div>
+                    </div>
+                }
+                else if (service.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus))
+                {
+                    var currentStatus = service.CurrentStatus as OfflineMaintenanceServiceStatus;
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <span class="pull-right label label-primary">maintenance</span>
+                        </div>
+                    </div>
+                }
+                else if (service.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus))
+                {
+                    var currentStatus = service.CurrentStatus as OnlineDegradedServiceStatus;
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <span class="pull-right label label-warning">degraded</span>
+                        </div>
+                    </div>
+                }
+                </div>
+            }
+            </div>
+        </div>
+    }
+}
+
+
+@if (Model.Count() == 0)
+{
+<p>
+    No services found.
+</p>
+}
+else
+{
+    <div class="serviceWrapper">
+    @foreach (var service in Model)
+    {
+        <div class="serviceContainer">
+        @if (service.CurrentStatus.GetType() == typeof(OnlineServiceStatus))
+        {
+            var currentStatus = service.CurrentStatus as OnlineServiceStatus;
+            <div class="serviceHeader alert-success">
+                <h4>
+                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                    <span class="pull-right label label-success">online</span>
+                </h4>
+            </div>
+                            
+            @ProcessChildrenHTML(service.Children.Where(x => x.Public).OrderBy(x => x.SortOrder).ToList())
+        }
+        else if (service.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus))
+        {
+            var currentStatus = service.CurrentStatus as OfflineUnplannedServiceStatus;
+
+            <div class="serviceHeader alert-danger">
+                <h4>
+                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                    <span class="pull-right label label-danger">down</span>
+                </h4>
+            </div>
+                                
+            @ProcessChildrenHTML(service.Children.Where(x => x.Public).OrderBy(x => x.SortOrder).ToList())
+        }
+        else if (service.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus))
+        {
+            var currentStatus = service.CurrentStatus as OfflineMaintenanceServiceStatus;
+
+            <div class="serviceHeader alert-info">
+                <h4>
+                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                    <span class="pull-right label label-primary">maintenance</span>
+                </h4>
+            </div>
+                                
+            @ProcessChildrenHTML(service.Children.Where(x => x.Public).OrderBy(x => x.SortOrder).ToList())
+        }
+        else if (service.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus))
+        {
+            var currentStatus = service.CurrentStatus as OnlineDegradedServiceStatus;
+
+            <div class="serviceHeader alert-warning">
+                <h4>
+                    <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = service.Url })">@service.Name</a>
+                    <span class="pull-right label label-warning">degraded</span>
+                </h4>
+            </div>
+                                
+            @ProcessChildrenHTML(service.Children.Where(x => x.Public).OrderBy(x => x.SortOrder).ToList())
+        }
+        </div>
+    }
+    </div>
+}

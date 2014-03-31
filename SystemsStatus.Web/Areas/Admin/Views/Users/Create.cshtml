@@ -1,0 +1,102 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Web.Areas.Admin.ViewModels
+@using SystemsStatus.Web.Extensions
+@model UsersCreateViewModel
+
+@{
+    ViewBag.Title = "Create User - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Users";
+    ViewBag.DashboardSubMenuActive = "Create User";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Users" })">Users</a>
+    </li>
+    <li class="active">Create User</li>
+</ol>
+<h1>Create User</h1>
+<p>
+    Complete the following form and click 'Create' to save your user.
+</p>
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                User Details
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.User.FirstName, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.User.FirstName, new { @class = "form-control", placeholder = "Enter a first name", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.User.FirstName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.User.LastName, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.User.LastName, new { @class = "form-control", placeholder = "Enter a last name", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.User.LastName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.User.Username, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.User.Username, new { @class = "form-control", placeholder = "Enter a username", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.User.Username)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.User.Role, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.DropDownListFor(x => x.User.Role.Id, Model.Roles.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.Value.ToString() }), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.User.Role)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                Password Details
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Password, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Enter a password", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Password)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.PasswordRepeat, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.PasswordFor(x => x.PasswordRepeat, new { @class = "form-control", placeholder = "Enter a repeated password", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.PasswordRepeat)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<center>
+    <span class="required">*</span> indicates a required field
+</center>
+<hr />
+<div class="row" style="margin-top: 20px;">
+    <div class="col-lg-12">
+        <div class="well well-sm" style="overflow: auto;">
+            <input type="button" class="btn btn-default pull-left" onclick="window.history.back()" value="Cancel" />
+            <input type="submit" class="btn btn-success pull-right" value="Create" />
+        </div>
+    </div>
+</div>
+}

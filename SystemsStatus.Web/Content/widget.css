@@ -1,0 +1,222 @@
+﻿/*
+*   Widget.css - Styles for widgets
+*/
+
+.ss-widget
+{
+    margin-bottom: 10px;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px      
+}
+
+.ss-widget-bordered
+{
+    border: 1px solid #e8e8e8;   
+}
+
+.ss-widget-header
+{
+    padding: 12px;
+    border-width: 0 0 1px;
+}
+
+.ss-widget-header h1.ss-widget-name
+{
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: bold;   
+    margin: 0;
+    padding: 0;
+}
+
+.ss-widget-name a
+{
+    color: #292f33;
+    text-decoration: none;
+}
+
+.ss-widget-stream, .ss-widget-entry, .header
+{
+    position: relative;   
+}
+
+.ss-widget-entry, .service-name
+{
+    zoom: 1;   
+}
+
+.ss-widget .ss-widget-stream
+{
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;   
+}
+
+.ss-widget .ss-widget-stream ol.ss-widget-feed
+{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border: 0;
+    -webkit-outline: 0;
+       -moz-outline: 0;
+        -ms-outline: 0;
+         -o-outline: 0;
+            outline: 0;
+}
+
+.ss-widget .ss-widget-stream ol.ss-widget-feed li
+{
+    list-style: none;
+    vertical-align: baseline;
+    border: 0;
+    -webkit-outline: 0;
+       -moz-outline: 0;
+        -ms-outline: 0;
+         -o-outline: 0;
+            outline: 0; 
+}
+
+.ss-widget .ss-widget-stream ol.ss-widget-feed li:hover
+{
+    background: #f1f1f1;
+}
+
+.ss-widget-entry
+{
+    padding: 12px 12px 10px 70px;
+    border-width: 0 0 1px;
+}
+
+.ss-widget-child
+{
+    padding-left: 90px;
+}
+
+.ss-widget-entry .header
+{
+    font-size: 12px;
+}
+
+.header span.time
+{
+    color: #707070;
+    position: relative;
+    z-index: 50;
+    float: right;
+    margin-top: 2px;
+}
+
+.header a.service-profile
+{
+    text-decoration: none;
+    outline: 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.header span.status
+{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -50px;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;   
+}
+
+.online
+{
+    background-color: #5cb85c;   
+}
+
+.down
+{
+    background-color: #d9534f;
+}
+
+.maintenance
+{
+    background-color: #428bca;
+}
+
+.degraded
+{
+    background-color: #f0ad4e;
+}
+
+.service-content
+{
+       
+}
+
+.service-content p
+{
+    margin: 0 5px 0 0;
+    overflow: hidden;
+    clear: both;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    color: #444;
+}
+
+.ss-widget-service-count
+{
+    float: right;
+}
+
+.ss-widget-count
+{
+    margin-left: 5px;   
+}
+
+.ss-widget-label
+{
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;   
+}
+
+.ss-widget-key
+{
+    text-align: center;
+    font-size: 12px;
+}
+
+.ss-widget-footer
+{
+    text-align: center; 
+    margin-top: 5px;
+}
+
+.ss-widget-footer p
+{
+    margin: 0;
+    font-size: 12px;
+}
+
+.ss-widget-footer a
+{
+    color: #C00C00; 
+    text-decoration: none;  
+}
+
+.ss-widget-footer a:hover
+{
+    text-decoration: underline;   
+}
+
+.ss-widget-notification, .ss-widget-notification:hover
+{
+    border-bottom: 1px solid #e8e8e8 !important;
+    background: rgba(66, 139, 202, 0.19) !important;
+}

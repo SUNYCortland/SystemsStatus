@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5C64DBC2-B5EB-4E67-A0DD-5E5449033A8C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SystemsStatus.DTO</RootNamespace>
+    <AssemblyName>SystemsStatus.DTO</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>PlasticSCM</SccProjectName>
+    <SccLocalPath>PlasticSCM</SccLocalPath>
+    <SccAuxPath>PlasticSCM</SccAuxPath>
+    <SccProvider>Plastic SCM Source Control Service:{774e58ba-f1b9-40a7-b676-834fa2c220fe}</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\AutoMapperApiConfig.cs" />
+    <Compile Include="Api\DepartmentApiDTO.cs" />
+    <Compile Include="Api\EntityApiDTO.cs" />
+    <Compile Include="Api\IEntityApiDTO.cs" />
+    <Compile Include="Api\Profiles\ApiProfile.cs" />
+    <Compile Include="Api\ScheduledMaintenanceApiDTO.cs" />
+    <Compile Include="Api\ServiceApiDTO.cs" />
+    <Compile Include="Api\Statuses\OfflineMaintenanceServiceStatusApiDTO.cs" />
+    <Compile Include="Api\Statuses\OfflineUnplannedServiceStatusApiDTO.cs" />
+    <Compile Include="Api\Statuses\OnlineDegradedServiceStatusApiDTO.cs" />
+    <Compile Include="Api\Statuses\OnlineServiceStatusApiDTO.cs" />
+    <Compile Include="Api\Statuses\ServiceStatusApiDTO.cs" />
+    <Compile Include="Api\UserApiDTO.cs" />
+    <Compile Include="Api\UserRoleApiDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SystemsStatus.Core\SystemsStatus.Core.csproj">
+      <Project>{2B140A80-4B7F-4937-9000-AD1A57849050}</Project>
+      <Name>SystemsStatus.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemsStatus.Data\SystemsStatus.Data.csproj">
+      <Project>{57EC5CEF-FD2B-4635-9BC6-612A639455E2}</Project>
+      <Name>SystemsStatus.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

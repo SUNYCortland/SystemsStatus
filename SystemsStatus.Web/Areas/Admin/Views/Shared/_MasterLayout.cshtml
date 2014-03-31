@@ -1,0 +1,236 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="shortcut icon" href="https://webapps1.cortland.edu/favicon.ico?v=2" type="image/vnd.microsoft.icon" />
+    @System.Web.Optimization.Styles.Render("~/bundles/css/bootstrap.min")
+    @System.Web.Optimization.Styles.Render("~/bundles/css/admin-theme")
+    @RenderSection("styles", required: false)
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <header class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="@Url.Action("Index", new { controller = "Home", area = "" })"><span class="glyphicon glyphicon-stats"></span> Systems Status</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <a href="#" class="btn btn-default btn-md dropdown-toggle pull-right" style="margin-top: 9px;" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-user"></span>
+                @User.Username
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu pull-right" style="margin-right: 8px;">
+                <li>
+                    <a href="@Url.Action("Index", new { controller = "Account" })">
+                        My Account
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.RouteUrl("Admin_Account_MyServices_FirstPage", new { display = "All" })">
+                        My Services
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.RouteUrl("Admin_Account_MyWidgets_FirstPage")">
+                        My Widgets
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("CreateWidget", new { controller = "Account" })">
+                        Create Widget
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("ChangePassword", new { controller = "Account" })">
+                        Change Password
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="@Url.Action("Logout", new { controller = "Auth" })">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="col-md-2">
+        <div id="sidebar-nav">
+            <ul id="dashboard-menu">
+                <li class="@(ViewBag.DashboardMenuActive == "Home" ? "active" : "")">
+                    @if (ViewBag.DashboardMenuActive == "Home")
+                    {
+                    <div class="pointer hidden-xs hidden-sm">
+                        <div class="arrow"></div>
+                        <div class="arrow-border"></div>
+                    </div>
+                    }
+                    <a href="@Url.Action("Index", new { controller = "Home" })">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span class="menu-text">Home</span>
+                    </a>
+                </li>
+                <li class="@(ViewBag.DashboardMenuActive == "Services" ? "active" : "")">
+                    @if (ViewBag.DashboardMenuActive == "Services")
+                    {
+                    <div class="pointer hidden-xs hidden-sm">
+                        <div class="arrow"></div>
+                        <div class="arrow-border"></div>
+                    </div>
+                    }
+                    <a href="#" class="dropdown-toggle">
+                        <span class="glyphicon glyphicon-hdd"></span>
+                        <span class="menu-text">Services</span>
+                        <span class="glyphicon glyphicon-chevron-down submenu-icon"></span>
+                    </a>
+                    <ul class="@(!String.IsNullOrWhiteSpace(ViewBag.DashboardSubMenuActive) && ViewBag.DashboardMenuActive == "Services" ? "active" : "") submenu">
+                        <li><a href="@Url.RouteUrl("Admin_Services_ServiceList_FirstPage", new { display = "All" })" class="@(ViewBag.DashboardSubMenuActive == "Service List" ? "active" : "")">Service List</a></li>
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Service Owner"))
+                        {
+                        <li><a href="@Url.Action("Hierarchy", new { controller = "Services" })" class="@(ViewBag.DashboardSubMenuActive == "Hierarchy" ? "active" : "")">Hierarchy</a></li>
+                        }
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Service Owner"))
+                        {
+                        <li><a href="@Url.Action("Create", new { controller = "Services" })" class="@(ViewBag.DashboardSubMenuActive == "Create Service" ? "active" : "")">Create Service</a></li>
+                        }
+                        <li><a href="@Url.Action("ChangeStatus", new { controller = "Services" })" class="@(ViewBag.DashboardSubMenuActive == "Change Status" ? "active" : "")">Change Status</a></li>
+                        <li><a href="@Url.Action("ScheduleMaintenance", new { controller = "Services" })" class="@(ViewBag.DashboardSubMenuActive == "Schedule Maintenance" ? "active" : "")">Schedule Maintenance</a></li>
+                    </ul>
+                </li>
+                <li class="@(ViewBag.DashboardMenuActive == "Maintenances" ? "active" : "")">
+                    @if (ViewBag.DashboardMenuActive == "Maintenances")
+                    {
+                    <div class="pointer hidden-xs hidden-sm">
+                        <div class="arrow"></div>
+                        <div class="arrow-border"></div>
+                    </div>
+                    }
+                    <a href="@Url.Action("Index", new { controller = "Maintenances" })">
+                        <span class="glyphicon glyphicon-wrench"></span>
+                        <span class="menu-text">Maintenances</span>
+                    </a>
+                </li>
+                @if (User.IsInRole("Administrator"))
+                {
+                <li class="@(ViewBag.DashboardMenuActive == "Departments" ? "active" : "")">
+                    @if (ViewBag.DashboardMenuActive == "Departments")
+                    {
+                    <div class="pointer hidden-xs hidden-sm">
+                        <div class="arrow"></div>
+                        <div class="arrow-border"></div>
+                    </div>
+                    }
+                    <a href="#" class="dropdown-toggle">
+                        <span class="glyphicon glyphicon-book"></span>
+                        <span class="menu-text">Departments</span>
+                        <span class="glyphicon glyphicon-chevron-down submenu-icon"></span>
+                    </a>
+                    <ul class="@(!String.IsNullOrWhiteSpace(ViewBag.DashboardSubMenuActive) && ViewBag.DashboardMenuActive == "Departments" ? "active" : "") submenu">
+                        <li><a href="@Url.RouteUrl("Admin_Departments_FirstPage")" class="@(ViewBag.DashboardSubMenuActive == "Department List" ? "active" : "")">Department List</a></li>
+                        <li><a href="@Url.Action("Create", new { controller = "Departments" })" class="@(ViewBag.DashboardSubMenuActive == "Create Department" ? "active" : "")">Create Department</a></li>
+                        <li><a href="@Url.Action("Import", new { controller = "Departments" })" class="@(ViewBag.DashboardSubMenuActive == "Import" ? "active" : "")">Import Departments</a></li>
+                    </ul>
+                </li>
+                <li class="@(ViewBag.DashboardMenuActive == "Users" ? "active" : "")">
+                    @if (ViewBag.DashboardMenuActive == "Users")
+                    {
+                    <div class="pointer hidden-xs hidden-sm">
+                        <div class="arrow"></div>
+                        <div class="arrow-border"></div>
+                    </div>
+                    }
+                    <a href="#" class="dropdown-toggle">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="menu-text">Users</span>
+                        <span class="glyphicon glyphicon-chevron-down submenu-icon"></span>
+                    </a>
+                    <ul class="@(!String.IsNullOrWhiteSpace(ViewBag.DashboardSubMenuActive) && ViewBag.DashboardMenuActive == "Users" ? "active" : "") submenu">
+                        <li><a href="@Url.Action("Index", new { controller = "Users" })" class="@(ViewBag.DashboardSubMenuActive == "Users List" ? "active" : "")">Users List</a></li>
+                        <li><a href="@Url.Action("Create", new { controller = "Users" })" class="@(ViewBag.DashboardSubMenuActive == "Create User" ? "active" : "")">Create User</a></li>
+                    </ul>
+                </li>
+                }
+                <li class="@(ViewBag.DashboardMenuActive == "Account" ? "active" : "")">
+                    @if (ViewBag.DashboardMenuActive == "Account")
+                    {
+                    <div class="pointer hidden-xs hidden-sm">
+                        <div class="arrow"></div>
+                        <div class="arrow-border"></div>
+                    </div>
+                    }
+                    <a href="#" class="dropdown-toggle">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        <span class="menu-text">Account</span>
+                        <span class="glyphicon glyphicon-chevron-down submenu-icon"></span>
+                    </a>
+                    <ul class="@(!String.IsNullOrWhiteSpace(ViewBag.DashboardSubMenuActive) && ViewBag.DashboardMenuActive == "Account" ? "active" : "") submenu">
+                        <li><a href="@Url.Action("Index", new { controller = "Account" })" class="@(ViewBag.DashboardSubMenuActive == "My Account" ? "active" : "")">My Account</a></li>
+                        <li><a href="@Url.RouteUrl("Admin_Account_MyServices_FirstPage", new { display = "All" })" class="@(ViewBag.DashboardSubMenuActive == "My Services" ? "active" : "")">My Services</a></li>
+                        <li><a href="@Url.RouteUrl("Admin_Account_MyWidgets_FirstPage")" class="@(ViewBag.DashboardSubMenuActive == "My Widgets" ? "active" : "")">My Widgets</a></li>
+                        <li><a href="@Url.Action("CreateWidget", new { controller = "Account" })" class="@(ViewBag.DashboardSubMenuActive == "Create Widget" ? "active" : "")">Create Widget</a></li>
+                        <li><a href="@Url.Action("ChangePassword", new { controller = "Account" })" class="@(ViewBag.DashboardSubMenuActive == "Change Password" ? "active" : "")">Change Password</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-10 content">
+        @RenderBody()
+    </div>
+    <div id="modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="modalTitle" class="modal-title"></h4>
+                </div>
+                <div id="modalBody" class="modal-body">
+                
+                </div>
+                <div id="modalFooter" class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @System.Web.Optimization.Scripts.Render("~/bundles/js/jquery")
+    @System.Web.Optimization.Scripts.Render("~/bundles/js/bootstrap.min")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown-toggle").on("click", function (e) {
+                e.preventDefault();
+
+                var submenu = $(this).next("ul");
+
+                submenu.slideToggle();
+
+                if (submenu.hasClass("active"))
+                    submenu.removeClass("active");
+                else
+                    submenu.addClass("active");
+
+                if ($(this).hasClass("active"))
+                    $(this).removeClass("active");
+                else
+                    $(this).addClass("active");
+            });
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

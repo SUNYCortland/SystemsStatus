@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Error - Not Authorized - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        Errors
+    </li>
+    <li class="active">Not Authorized</li>
+</ol>
+<h2><span class="glyphicon glyphicon-warning-sign"></span> Error</h2>
+<div class="alert alert-block alert-danger">
+    <p>
+        You are not authorized to view this content.
+    </p>
+</div>

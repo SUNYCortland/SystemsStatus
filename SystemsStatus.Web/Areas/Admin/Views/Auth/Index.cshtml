@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Login - Systems Status - SUNY Cortland";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @System.Web.Optimization.Styles.Render("~/bundles/css/bootstrap")
+    @System.Web.Optimization.Styles.Render("~/bundles/css/admin-theme")
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div style="max-width: 500px; padding: 15px; margin: 0 auto;">
+            <center>
+                <h2>Choose an authentication method</h2>
+                <a href="@Url.Action("LoginCAS", new { ReturnUrl = Request.QueryString["ReturnUrl"] })">CAS Login</a> | <a href="@Url.Action("Login", new { ReturnUrl = Request.QueryString["ReturnUrl"] })">Default Login</a>
+            </center>
+        </div>
+    </div>
+    
+</body>
+</html>

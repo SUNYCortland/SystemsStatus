@@ -1,0 +1,41 @@
+﻿@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Web.Extensions;
+@model OfflineMaintenanceServiceStatus
+
+@Html.HiddenFor(x => x.Id)
+@Html.HiddenFor(x => x.ScheduledMaintenance.Id)
+<div class="form-group">
+    @Html.LabelForRequired(x => x.Name, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Enter a status name", autocomplete = "off" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelForRequired(x => x.ScheduledMaintenance.Name, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextBoxFor(x => x.ScheduledMaintenance.Name, new { @class = "form-control", placeholder = "Enter a scheduled maintenance name", autocomplete = "off" })
+        @Html.ValidationMessageFor(x => x.ScheduledMaintenance.Name)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelForRequired(x => x.ScheduledMaintenance.Description, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextAreaFor(x => x.ScheduledMaintenance.Description, new { @class = "form-control", placeholder = "Enter a scheduled maintenance description", autocomplete = "off", rows = "7" })
+        @Html.ValidationMessageFor(x => x.ScheduledMaintenance.Description)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelForRequired(x => x.ScheduledMaintenance.Offline, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextBoxFor(x => x.ScheduledMaintenance.Offline, "{0:MM/dd/yyyy hh:mm tt}", new { @class = "form-control datepicker", placeholder = "Enter an offline date and time", autocomplete = "off" })
+        @Html.ValidationMessageFor(x => x.ScheduledMaintenance.Offline)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(x => x.ScheduledMaintenance.ExpectedOnline, new { @class = "col-lg-3" })
+    <div class="col-lg-9">
+        @Html.TextBoxFor(x => x.ScheduledMaintenance.ExpectedOnline, "{0:MM/dd/yyyy hh:mm tt}", new { @class = "form-control datepicker", placeholder = "Enter an expected online date and time", autocomplete = "off" })
+        @Html.ValidationMessageFor(x => x.ScheduledMaintenance.ExpectedOnline)
+    </div>
+</div>

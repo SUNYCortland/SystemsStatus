@@ -1,0 +1,121 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Web.Extensions
+@model User
+
+@{
+    ViewBag.Title = Model.FirstName + " " + Model.LastName + " - Systems Status Admin - SUNY Cortland";
+    Layout = "~/Areas/Admin/Views/Shared/_MasterLayout.cshtml";
+    ViewBag.DashboardMenuActive = "Account";
+    ViewBag.DashboardSubMenuActive = "My Account";
+}
+
+<ol class="breadcrumb" style="margin-top: 10px;">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Account" })">Account</a>
+    </li>
+    <li class="active">@Model.FirstName @Model.LastName</li>
+</ol>
+<h1>@Model.FirstName @Model.LastName</h1>
+<p>
+    Make any changes to your account and click 'Save'.
+</p>
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>User Details</legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.FirstName, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", placeholder = "Enter a first name", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.FirstName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.LastName, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", placeholder = "Enter a first name", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.LastName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Username, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Username, new { @class = "form-control", @readonly="readonly", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Username)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-lg-6">
+        <fieldset>
+            <legend>
+                User Role
+            </legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelForRequired(x => x.Role, new { @class = "col-lg-3" })
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(x => x.Role.Name, new { @class = "form-control", @readonly = "readonly", autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.Role)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<center>
+    <span class="required">*</span> indicates a required field
+</center>
+<hr />
+<div class="row" style="margin-top: 20px;">
+    <div class="col-lg-12">
+        <div class="well well-sm" style="overflow: auto;">
+            <input type="submit" class="btn btn-success pull-right" value="Save" />
+        </div>
+    </div>
+</div>
+}
+@if (ViewBag.Saved != null)
+{
+<div id="modalSaved" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="modalTitle" class="modal-title">Saved</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success">
+                    <h4>Success!</h4>
+                    <p>
+                        Your account have been saved successfully.
+                    </p>
+                </div>
+            </div>
+            <div id="modalFooter" class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            @if (ViewBag.Saved != null)
+            {
+            <text>
+            $("#modalSaved").modal("show");
+            </text>
+            }
+        });
+    </script>
+}

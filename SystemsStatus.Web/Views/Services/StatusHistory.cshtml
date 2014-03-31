@@ -1,0 +1,192 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@using SystemsStatus.Core.Data.Entities.Statuses
+@using SystemsStatus.Common.Pagination
+@using SystemsStatus.Web.Extensions
+@using SystemsStatus.Web.ViewModels
+@model ServicesStatusHistoryViewModel
+@{
+    ViewBag.Title = Model.Service.Name + " - Status History - Systems Status - SUNY Cortland";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+@section breadcrumb
+{
+<ol class="breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Home" })">Home</a>
+    </li>
+    <li>
+        <a href="@Url.Action("AZList", new { controller = "ServiceLists" })">Services</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", new { controller = "Services", serviceUrl = Model.Service.Url })">@Model.Service.Name</a>
+    </li>
+    <li class="active">
+        Status History
+    </li>
+</ol>
+}
+<div class="row contentContainer">
+    <div class="col-md-12 contentHeader">
+        <h4>
+            <span class="glyphicon glyphicon-stats"></span> SUNY Cortland System Status - @Model.Service.Name
+        </h4>
+    </div>
+    <div class="col-md-12 content">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <fieldset>
+                    <legend>
+                        Current Status
+                    </legend>
+                    <p>
+                        @Model.Service.Description
+                    </p>
+                    @if (Model.Service.CurrentStatus.GetType() == typeof(OnlineServiceStatus))
+                    {
+                        var currentStatus = Model.Service.CurrentStatus as OnlineServiceStatus;
+                    
+                        <div class="alert alert-success"> 
+                            <h4 style="color: #333;">@Model.Service.Name<span class="label label-success pull-right">online</span></h4>
+                        </div>
+                    }
+                    else if (Model.Service.CurrentStatus.GetType() == typeof(OfflineUnplannedServiceStatus))
+                    {
+                        var currentStatus = Model.Service.CurrentStatus as OfflineUnplannedServiceStatus;
+                        <div class="alert alert-danger">
+                            <h4 style="color: #333;">@Model.Service.Name<span class="label label-danger pull-right">down</span></h4>
+                            <hr />
+                            <strong>Cause:</strong> @currentStatus.OfflineCause
+                            @if (currentStatus.ExpectedOnline.HasValue)
+                            {
+                            <br />
+                            <strong>Expected Online:</strong> @currentStatus.ExpectedOnline.Value.ToString("dddd, MMMM d - h:mm tt")
+                            }
+                        </div>
+                    }
+                    else if (Model.Service.CurrentStatus.GetType() == typeof(OfflineMaintenanceServiceStatus))
+                    {
+                        var currentStatus = Model.Service.CurrentStatus as OfflineMaintenanceServiceStatus;
+                        <div class="alert alert-info">
+                            <h4 style="color: #333;">@Model.Service.Name<span class="label label-primary pull-right">maintenance</span></h4>
+                            <hr />
+                            <p>
+                                <strong>Description:</strong> @currentStatus.ScheduledMaintenance.Description
+                            </p>
+                            <strong>Expected Offline:</strong> @currentStatus.ScheduledMaintenance.Offline.ToString("dddd, MMMM d - h:mm tt")
+                            @if (currentStatus.ScheduledMaintenance.ExpectedOnline.HasValue)
+                            {
+                            <br />
+                            <strong>Expected Online:</strong> @currentStatus.ScheduledMaintenance.ExpectedOnline.Value.ToString("dddd, MMMM d - h:mm tt")
+                            }
+                        </div>
+                    }
+                    else if (Model.Service.CurrentStatus.GetType() == typeof(OnlineDegradedServiceStatus))
+                    {
+                        var currentStatus = Model.Service.CurrentStatus as OnlineDegradedServiceStatus;
+                        <div class="alert alert-warning">
+                            <h4 style="color: #333;">@Model.Service.Name<span class="label label-warning pull-right">degraded</span></h4>
+                            <hr />
+                            <p>
+                                <strong>Cause:</strong> @currentStatus.Cause
+                            </p>
+                            <strong>Degraded Since:</strong> @currentStatus.DegradedSince.ToString("dddd, MMMM d - h:mm tt")
+                            @if (currentStatus.ExpectedOnline.HasValue)
+                            {
+                            <br />
+                            <strong>Expected Normal:</strong> @currentStatus.ExpectedOnline.Value.ToString("dddd, MMMM d - h:mm tt")
+                            }
+                        </div>
+                    }
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        Status History
+                        <span class="pull-right" style="font-weight: normal; color: #333; font-size: 12px; line-height: 35px;">
+                            Showing statuses (@Model.Statuses.ItemStart - @Model.Statuses.ItemEnd) of @Model.Statuses.TotalItemCount
+                        </span>
+                    </legend>
+                    
+                    @foreach (var status in Model.Statuses)
+                    {
+                        if (status.GetType() == typeof(OnlineServiceStatus))
+                        {
+                            var currentStatus = status as OnlineServiceStatus;
+                    
+                            <div class="dateBlock pull-left">
+                                <div class="month">@currentStatus.OnlineSince.ToString("MMM")</div>
+                                <div class="date">@currentStatus.OnlineSince.ToString("dd")</div>
+                                <div class="year">@currentStatus.OnlineSince.ToString("yyyy")</div>
+                            </div>
+                            <div class="label label-success pull-right">
+                                online
+                            </div>
+                            <p>
+                                <em>@currentStatus.OnlineSince.ToString("h:mm tt")</em>
+                                <br /><br />
+                                @Model.Service.Name is online.
+                            </p>
+                        }
+                        else if (status.GetType() == typeof(OfflineUnplannedServiceStatus))
+                        {
+                            var currentStatus = status as OfflineUnplannedServiceStatus;
+                            
+                            <div class="dateBlock pull-left">
+                                <div class="month">@currentStatus.OfflineSince.ToString("MMM")</div>
+                                <div class="date">@currentStatus.OfflineSince.ToString("dd")</div>
+                                <div class="year">@currentStatus.OfflineSince.ToString("yyyy")</div>
+                            </div>
+                            <div class="label label-danger pull-right">
+                                down
+                            </div>
+                            <p>
+                                <em>@currentStatus.OfflineSince.ToString("h:mm tt")</em>
+                                <br /><br />
+                                @currentStatus.OfflineCause
+                            </p>
+                        }
+                        else if (status.GetType() == typeof(OfflineMaintenanceServiceStatus))
+                        {
+                            var currentStatus = status as OfflineMaintenanceServiceStatus;
+
+                            <div class="dateBlock pull-left">
+                                <div class="month">@currentStatus.ScheduledMaintenance.Offline.ToString("MMM")</div>
+                                <div class="date">@currentStatus.ScheduledMaintenance.Offline.ToString("dd")</div>
+                                <div class="year">@currentStatus.ScheduledMaintenance.Offline.ToString("yyyy")</div>
+                            </div>
+                            <div class="label label-primary pull-right">
+                                maintenance
+                            </div>
+                            <p>
+                                <em>@currentStatus.ScheduledMaintenance.Offline.ToString("h:mm tt")</em>
+                                <br /><br />
+                                @currentStatus.ScheduledMaintenance.Description
+                            </p>
+                        }
+                        else if (status.GetType() == typeof(OnlineDegradedServiceStatus))
+                        {
+                            var currentStatus = status as OnlineDegradedServiceStatus;
+                            
+                            <div class="dateBlock pull-left">
+                                <div class="month">@currentStatus.DegradedSince.ToString("MMM")</div>
+                                <div class="date">@currentStatus.DegradedSince.ToString("dd")</div>
+                                <div class="year">@currentStatus.DegradedSince.ToString("yyyy")</div>
+                            </div>
+                            <div class="label label-warning pull-right">
+                                degraded
+                            </div>
+                            <p>
+                                <em>@currentStatus.DegradedSince.ToString("h:mm tt")</em>
+                                <br /><br />
+                                @currentStatus.Cause
+                            </p>
+                        }
+                        <div class="clearfix"></div>
+                        <hr />
+                    }
+                    @Html.Pager(Model.Statuses.PageSize, Model.Statuses.PageNumber, Model.Statuses.TotalItemCount).Options(o => o.DisplayTemplate("_BootstrapPagination"))  
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="shortcut icon" href="https://webapps1.cortland.edu/favicon.ico?v=2" type="image/vnd.microsoft.icon" />
+    @System.Web.Optimization.Styles.Render("~/bundles/css/bootstrap.min")
+    @System.Web.Optimization.Styles.Render("~/bundles/css/theme")
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container" style="max-width: 950px;">
+        <div class="row" style="margin-bottom: 45px;">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 visible-lg visible-md hidden-sm hidden-xs">
+                <img class="img-responsive" src="@Url.Content("~/Images/logo.gif")" alt="SUNY Cortland" />
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <div class="pull-right">
+                    @RenderSection("breadcrumb", required: false)
+                </div>
+            </div>
+        </div>
+        @RenderBody()  
+    </div>
+
+    @System.Web.Optimization.Scripts.Render("~/bundles/js/jquery")
+    @System.Web.Optimization.Scripts.Render("~/bundles/js/bootstrap.min")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D42D40C3-6B36-4879-8E76-A614C1146007}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SystemsStatus.Web</RootNamespace>
+    <AssemblyName>SystemsStatus.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <SccProjectName>PlasticSCM</SccProjectName>
+    <SccLocalPath>PlasticSCM</SccLocalPath>
+    <SccAuxPath>PlasticSCM</SccAuxPath>
+    <SccProvider>Plastic SCM Source Control Service:{774e58ba-f1b9-40a7-b676-834fa2c220fe}</SccProvider>
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleTransformer.Core, Version=1.8.17.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BundleTransformer.Core.1.8.17\lib\net40\BundleTransformer.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.3.2.2\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Logging, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.LoggingFacility.3.2.0\lib\net40\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Services.Logging.Log4netIntegration">
+      <HintPath>..\packages\Castle.Core-log4net.3.2.0\lib\net40\Castle.Services.Logging.Log4netIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.2.1\lib\net40\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentNHibernate.1.4.0.0\lib\net35\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentValidation.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc, Version=5.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentValidation.MVC4.5.0.0.1\lib\Net40\FluentValidation.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.2\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Attributes\AjaxAuthorizeActionFilter.cs" />
+    <Compile Include="Areas\Admin\Attributes\UserAuthorizeAttribute.cs" />
+    <Compile Include="Areas\Admin\Authentication\IUserPrincipal.cs" />
+    <Compile Include="Areas\Admin\Authentication\UserPrincipal.cs" />
+    <Compile Include="Areas\Admin\Authentication\UserPrincipalPoco.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DepartmentsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ErrorsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MaintenancesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ServicesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Models\ServiceSortOrderModel.cs" />
+    <Compile Include="Areas\Admin\Validators\AccountChangePasswordViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\AccountCreateWidgetViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\AccountEditWidgetViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\DepartmentsCreateViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\DepartmentsImportViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\LoginViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\ServiceListChangeStatusViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\ServicesChangeStatusViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\ServicesEditViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\ServicesScheduleMaintenanceViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\UsersCreateViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\UsersEditViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\ViewModels\AccountChangePasswordViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\AccountCreateWidgetViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\AccountEditWidgetViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\DepartmentsCreateViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\DepartmentsImportViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\HomeIndexViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\LoginViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\ServiceListChangeStatusViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\ServicesChangeStatusViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\ServicesCreateViewModel.cs" />
+    <Compile Include="Areas\Admin\Validators\ServicesCreateViewModelValidator.cs" />
+    <Compile Include="Areas\Admin\ViewModels\ServicesEditViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\ServicesHierarchyViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\ServicesScheduleMaintenanceViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\UsersCreateViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\UsersEditViewModel.cs" />
+    <Compile Include="Areas\Admin\Views\BaseViewPage.cs" />
+    <Compile Include="Attributes\HandleModelStateExceptionAttribute.cs" />
+    <Compile Include="Controllers\Api\MaintenancesController.cs" />
+    <Compile Include="Controllers\Api\ServicesController.cs" />
+    <Compile Include="Controllers\ErrorsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MaintenancesController.cs" />
+    <Compile Include="Controllers\ServiceListsController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Controllers\WidgetsController.cs" />
+    <Compile Include="Dependency\WebDependencyInstaller.cs" />
+    <Compile Include="Dependency\WindsorControllerFactory.cs" />
+    <Compile Include="Dependency\WindsorDependencyResolver.cs" />
+    <Compile Include="Dependency\WindsorDependencyScope.cs" />
+    <Compile Include="Exceptions\ModelStateException.cs" />
+    <Compile Include="Extensions\ChunkListExtension.cs" />
+    <Compile Include="Extensions\PagingExtensions.cs" />
+    <Compile Include="Extensions\PercentageExtension.cs" />
+    <Compile Include="Extensions\RequiredLabelExtension.cs" />
+    <Compile Include="Extensions\RouteValueDictionaryExtensions.cs" />
+    <Compile Include="Extensions\TruncateAtWordExtension.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pager.cs" />
+    <Compile Include="Models\PagerOptions.cs" />
+    <Compile Include="Models\PagerOptionsBuilder.cs" />
+    <Compile Include="Models\PaginationModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Api\MaintenancesViewModel.cs" />
+    <Compile Include="ViewModels\Api\ServicesViewModel.cs" />
+    <Compile Include="ViewModels\Api\StatusHistoryViewModel.cs" />
+    <Compile Include="ViewModels\HomeIndexViewModel.cs" />
+    <Compile Include="ViewModels\ServicesIndexViewModel.cs" />
+    <Compile Include="ViewModels\ServicesStatusHistoryViewModel.cs" />
+    <Compile Include="ViewModels\WidgetsIndexViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Areas\Admin\Scripts\knockout-3.0.0.js" />
+    <Content Include="Content\images\animated-overlay.gif" />
+    <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_75_C00C00_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\images\ui-icons_333333_256x240.png" />
+    <Content Include="Content\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui-1.10.3.custom.css" />
+    <Content Include="Content\jquery-ui-1.10.3.custom.min.css" />
+    <Content Include="Areas\Admin\Content\nestable.css" />
+    <Content Include="Areas\Admin\Content\theme.css" />
+    <Content Include="Areas\Admin\Content\timepicker.css" />
+    <Content Include="Areas\Admin\Scripts\jquery.nestable.js" />
+    <Content Include="Areas\Admin\Scripts\jquery.ui.timepicker.addon.js" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\theme.css" />
+    <Content Include="Content\favicon.ico" />
+    <Content Include="Content\widget.css" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\ajax_loader.gif" />
+    <Content Include="Images\background.gif" />
+    <Content Include="Images\glyphicons-halflings-white.png" />
+    <Content Include="Images\glyphicons-halflings.png" />
+    <Content Include="Images\logo.gif" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CountUp.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-ui-1.10.3.custom.js" />
+    <Content Include="Scripts\jquery-ui-1.10.3.custom.min.js" />
+    <Content Include="Scripts\jquery.ajaxRequest.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\widget.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="logs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SystemsStatus.Common\SystemsStatus.Common.csproj">
+      <Project>{1AEA2C44-8C4B-47C2-937B-F757BF24392B}</Project>
+      <Name>SystemsStatus.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemsStatus.Core\SystemsStatus.Core.csproj">
+      <Project>{2B140A80-4B7F-4937-9000-AD1A57849050}</Project>
+      <Name>SystemsStatus.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemsStatus.Data\SystemsStatus.Data.csproj">
+      <Project>{57EC5CEF-FD2B-4635-9BC6-612A639455E2}</Project>
+      <Name>SystemsStatus.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemsStatus.Dependency\SystemsStatus.Dependency.csproj">
+      <Project>{76B29B8A-11DC-448B-A45F-467D785A1308}</Project>
+      <Name>SystemsStatus.Dependency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemsStatus.DTO\SystemsStatus.DTO.csproj">
+      <Project>{5C64DBC2-B5EB-4E67-A0DD-5E5449033A8C}</Project>
+      <Name>SystemsStatus.DTO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="log4net.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\Auth\LoginCAS.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Auth\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_MasterLayout.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\ServiceList.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\Hierarchy.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\EditorTemplates\OnlineServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\EditorTemplates\OfflineUnplannedServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\EditorTemplates\OfflineMaintenanceServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_Create_OnlineServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_Create_OfflineUnplannedServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_Create_OfflineMaintenanceServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\ChangeStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ChangeStatus_OnlineServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ChangeStatus_OfflineUnplannedServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ChangeStatus_OfflineMaintenanceServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\MyServices.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\ChangePassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\ScheduleMaintenance.cshtml" />
+    <Content Include="Areas\Admin\Views\Maintenances\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Maintenances\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\EditorTemplates\OnlineDegradedServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ChangeStatus_OnlineDegradedServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\_BootstrapPagination.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\Import.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\ImportError.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\ImportSuccess.cshtml" />
+    <Content Include="Areas\Admin\Views\Errors\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Errors\NotFound.cshtml" />
+    <Content Include="Areas\Admin\Views\Errors\NotAuthorized.cshtml" />
+    <Content Include="Areas\Admin\Views\Errors\InternalServerError.cshtml" />
+    <Content Include="Views\Shared\_MasterLayout.cshtml" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Views\Services\Index.cshtml" />
+    <Content Include="Views\ServiceLists\AZList.cshtml" />
+    <Content Include="Views\Home\_ServicesDashboard.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\_BootstrapPagination.cshtml" />
+    <Content Include="Views\Errors\Index.cshtml" />
+    <Content Include="Views\Errors\NotFound.cshtml" />
+    <Content Include="Views\Errors\NotAuthorized.cshtml" />
+    <Content Include="Views\Errors\InternalServerError.cshtml" />
+    <Content Include="Views\Maintenances\Index.cshtml" />
+    <Content Include="Views\Services\StatusHistory.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\Account\MyWidgets.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\CreateWidget.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\_WidgetPreview.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\EditWidget.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ServiceList_ChangeStatusForm.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ServiceList_ChangeStatus_OnlineServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ServiceList_ChangeStatus_OnlineDegradedServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ServiceList_ChangeStatus_OfflineUnplannedServiceStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\_ServiceList_ChangeStatus_OfflineMaintenanceServiceStatus.cshtml" />
+    <None Include="BundleTransformer.Configuration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Widgets\Index.cshtml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>58537</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
