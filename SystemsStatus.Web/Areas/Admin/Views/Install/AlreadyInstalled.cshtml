@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Already Installed - Systems Status - SUNY Cortland";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @System.Web.Optimization.Styles.Render("~/bundles/css/bootstrap")
+    @System.Web.Optimization.Styles.Render("~/bundles/css/admin-theme")
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div style="max-width: 500px; padding: 15px; margin: 0 auto;">
+            <center>
+                <div class="alert alert-block alert-warning">
+                    <h4>This application has already been installed.</h4>
+                </div>
+            </center>
+        </div>
+    </div>
+</body>
+</html>

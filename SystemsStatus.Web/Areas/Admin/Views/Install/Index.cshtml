@@ -1,0 +1,43 @@
+﻿@using SystemsStatus.Core.Data.Entities
+@model User
+
+@{
+    ViewBag.Title = "Install - Systems Status - SUNY Cortland";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @System.Web.Optimization.Styles.Render("~/bundles/css/bootstrap")
+    @System.Web.Optimization.Styles.Render("~/bundles/css/admin-theme")
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div style="max-width: 500px; padding: 15px; margin: 0 auto;">
+            <center>
+                <h2>Initial user:</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", placeholder = "First Name" })
+                    @Html.ValidationMessageFor(x => x.FirstName)
+                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", placeholder = "Last Name" })
+                    @Html.ValidationMessageFor(x => x.LastName)
+                    @Html.TextBoxFor(x => x.Username, new { @class = "form-control", placeholder = "Username" })
+                    @Html.ValidationMessageFor(x => x.Username)
+                    @Html.PasswordFor(x => x.HashedPassword, new { @class = "form-control", placeholder = "Password" })
+                    @Html.ValidationMessageFor(x => x.HashedPassword)
+                    <br />
+                    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Install" />
+                }
+            </center>
+        </div>
+    </div>
+    
+</body>
+</html>
