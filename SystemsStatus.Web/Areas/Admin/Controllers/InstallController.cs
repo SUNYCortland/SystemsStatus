@@ -23,6 +23,7 @@ namespace SystemsStatus.Web.Areas.Admin.Controllers
         //
         // GET: /Admin/Install/
 
+        [HttpGet]
         public ActionResult Index()
         {
             var user = new User();
@@ -30,11 +31,8 @@ namespace SystemsStatus.Web.Areas.Admin.Controllers
             var users = _userService.GetAllUsers()
                             .ToList();
 
-            if (users != null
-                || users.Count() > 0)
-            {
+            if (users.Count() > 0)
                 return View("AlreadyInstalled");
-            }
 
             return View(user);
         }
@@ -43,16 +41,15 @@ namespace SystemsStatus.Web.Areas.Admin.Controllers
         // POST: /Admin/Install
 
         [HttpPost]
-        public ActionResult Install(User user)
+        public ActionResult Index(User user)
         {
             var users = _userService.GetAllUsers()
                             .ToList();
 
-            if (users != null
-                || users.Count() > 0)
-            {
+            if (users.Count() > 0)
                 return View("AlreadyInstalled");
-            }
+
+            ModelState["Role"].Errors.Clear();
 
             user.Role = _userRoleService.GetAllUserRoles()
                             .Where(x => x.Name == "Administrator")
