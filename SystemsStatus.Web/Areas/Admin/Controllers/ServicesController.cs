@@ -634,7 +634,7 @@ namespace SystemsStatus.Web.Areas.Admin.Controllers
                     {
                         var currentStatus = (OnlineDegradedServiceStatus)service.CurrentStatus;
 
-                        currentStatus.ActualOnline = vm.OnlineDegradedServiceStatus.DegradedSince;
+                        currentStatus.ActualOnline = vm.OfflineUnplannedServiceStatus.OfflineSince;
 
                         _serviceStatusService.SaveStatus(currentStatus);
                     }
@@ -950,7 +950,7 @@ namespace SystemsStatus.Web.Areas.Admin.Controllers
                 {
                     var currentStatus = (OnlineDegradedServiceStatus)service.CurrentStatus;
 
-                    currentStatus.ActualOnline = vm.OnlineDegradedServiceStatus.DegradedSince;
+                    currentStatus.ActualOnline = vm.OfflineUnplannedServiceStatus.OfflineSince;
 
                     _serviceStatusService.SaveStatus(currentStatus);
                 }
